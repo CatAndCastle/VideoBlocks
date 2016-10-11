@@ -1,0 +1,13 @@
+{
+	"name": "ZS_Template_FLOAT_Quote_01",
+	"type": "post",
+	"assets":[
+		{
+			"usericon": [{"idx":4, "type":"image"}],
+			"userhandle": [{"idx":5, "type":"text"}, {"idx":11, "type":"text"}],
+			"tweetbody": [{"idx":1, "type":"text"}],
+			"hashtags": [{"idx":2, "type":"text"}],
+			"media" : [{"idx": 12, "type":"image"}]
+		}
+	]
+}

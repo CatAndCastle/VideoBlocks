@@ -1,0 +1,13 @@
+{
+	"name": "ZS_Template_SPLIT_Title_02",
+	"type": "title",
+	"assets":[
+		{
+			"location": [{"idx":6, "type":"text"}],
+			"title": [{"idx":8, "type":"text"}],
+			"date": [{"idx":7, "type":"text"}],
+			"userhandle": [{"idx":11, "type":"text"}],
+			"media" : [{"idx": 12, "type":"image"}]
+		}
+	]
+}

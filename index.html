@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html style="width: 100%;height: 100%">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body{
+            background-color:#ccc;
+            margin: 0px;
+            height: 100%;
+            overflow: hidden;
+        }
+        #bodymovin{
+            background-color:#ddd;
+            width:960px;
+            height:540px;
+            display:block;
+            overflow: hidden;
+            transform: translate3d(0,0,0);
+            margin: auto;
+            opacity: 1;
+        }
+
+    </style>
+
+    <script src="Player/config.js"></script>
+    <script src="Player/bodymovin/bodymovin.js"></script>
+    <script src="Player/managers/Block.js"></script>
+    <script src="Player/models/Asset.js"></script>
+    <script src="Player/models/Story.js"></script>
+    <script src="Player/utils/helpers.js"></script>
+    <script src="Player/managers/FontManager.js"></script>
+    <script src="Player/managers/ColorManager.js"></script>
+    <script src="Player/managers/TemplateManager.js"></script>
+    <script src="Player/VideoConstructor.js"></script>
+
+</head>
+<body style="background-color:#ccc; margin: 0px;height: 100%;">
+  <div id="bodymovin"></div>
+
+  <script>
+    STORYID = getQueryStringValue('storyId');
+
+    var renderer = getQueryStringValue('renderer');
+    CONFIG.renderer = renderer || 'canvas';
+
+    var platform = getQueryStringValue('p');
+    CONFIG.platform = platform || 'browser';
+
+
+    function advance(constructor){
+        var keepgoing = constructor.goToNextFrame();
+        if(keepgoing){
+            setTimeout(function(){
+                advance(constructor);
+            },50);
+        }
+    }
+    constructor = new VideoConstructor({storyId: STORYID});
+    // constructor.startRender();
+    advance(constructor);
+   
+  </script>
+</body>
+</html>
