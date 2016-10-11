@@ -1,8 +1,8 @@
 <?php
-	define('API_URL', 'http://zeroslant.local/api/v0.2/');
+	define('API_URL', 'http://zeroslant.com/api/v0.2/');
 	
-	define('FFMPEG_BIN', '/usr/local/bin/ffmpeg');
-	define('FFPROBE_BIN', '/usr/local/bin/ffprobe');
+	define('FFMPEG_BIN', 'ffmpeg');
+	define('FFPROBE_BIN', 'ffprobe');
 	define('PHANTOM_BIN', 'phantomjs');
 
 	// AWS access info

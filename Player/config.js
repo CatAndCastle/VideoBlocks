@@ -1,3 +1,3 @@
 CONFIG = {
-    api_url : 'http://zeroslant.local/api/v0.2/'
+    api_url : 'http://zeroslant.com/api/v0.2/'
 };
