@@ -27,7 +27,9 @@ while(true){
 
 	$msg = $msgs['Messages'][0];
 	$storyId = $msg['Body'];
+
 	echo "rendering story $storyId\n";
+	$time_start = microtime(true);
 	
 	// Remove from queue
 	$sqs->deleteMessage(SQSQueue::Video, $msg);
@@ -67,6 +69,11 @@ while(true){
 
 	// Delete working dir
 	$bot->cleanup();
+
+	// log time
+	$time_end = microtime(true);
+	$time = ceil($time_end - $time_start);
+	echo "t = $time\n";
 
 	// Sleep before next cycle
 	usleep($micro);
