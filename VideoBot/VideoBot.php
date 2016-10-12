@@ -15,6 +15,14 @@ abstract class VideoStatus
     const error = 3;
 }
 
+abstract class VideoError
+{
+    const STORY_ERROR = 0;
+    const RENDER_ERROR = 1;
+    const RENDER_TIMEOUT_ERROR = 2;
+
+}
+
 class VideoBot{
 
 	public $storyId;
@@ -31,21 +39,32 @@ class VideoBot{
 
 	function render(){
 		// prepare
-		try {
-			$this->prepare();
+		try { $this->prepare();
 		}catch (Exception $e) {
 		    echo 'Caught exception: ',  $e->getMessage(), "\n";
-		    return null;
+		    return ['status'=>'error', 'error'=>VideoError::STORY_ERROR, 'video'=>null];
 		}
 
 		// render
-		$this->makeVideo();
+		try { $this->makeVideo();
+		}catch (PhantomException $e){
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			if ($e->getCode() == PhantomException::TIMEOUT){
+				return ['status'=>'error', 'error'=>VideoError::RENDER_TIMEOUT_ERROR, 'video'=>null];
+			}
+			else if ($e->getCode() == PhantomException::PAGE_ERROR){
+				return ['status'=>'error', 'error'=>VideoError::RENDER_ERROR, 'video'=>null];
+			}
+			else if ($e->getCode() == PhantomException::RENDER_ERROR){
+				return ['status'=>'error', 'error'=>VideoError::RENDER_ERROR, 'video'=>null];
+			}
+		}
 
 		if(file_exists($this->dir."/".$this->finalName())){
-			return $this->dir."/".$this->finalName();
+			return ['status'=>'success', 'video'=>$this->dir."/".$this->finalName()];
 		}
 		else{
-			return null;
+			return ['status'=>'error', 'error'=>VideoError::RENDER_ERROR, 'video'=>null];
 		}
 	}
 
@@ -64,6 +83,17 @@ class VideoBot{
 		$phantom = new Phantom();
 		$this->video = $this->dir."/video.mp4";
 		$phantom->renderVideo($this->storyId, $this->video);
+
+		// check if phantom printed any error logs
+		if(file_exists($this->dir."/phantomjs-timeout.log")){
+			throw new PhantomException('Phantomjs timed out loading page resources', PhantomException::TIMEOUT);
+		}
+		else if(file_exists($this->dir."/phantomjs-error.log")){
+			throw new PhantomException('Phantomjs: there was an error loading the video page', PhantomException::PAGE_ERROR);
+		}
+		else if(!file_exists($this->video)){
+			throw new PhantomException('Phantomjs: there was an error rendering the video', PhantomException::RENDER_ERROR);
+		}
 
 		$ffmpeg = new FFmpeg();
 		$ffmpeg->combineAV($this->video, $this->audio, $this->dir."/".$this->finalName(), $this->dir);
