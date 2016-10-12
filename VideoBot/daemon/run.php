@@ -44,10 +44,11 @@ while(true){
 		if($e == VideoError::RENDER_TIMEOUT_ERROR){
 			// page hung up -> try again
 			$mysql->setVideoStatus($storyId, VideoStatus::queue, $url=null);
+			$bot->cleanup();
 			$sqs->pushToVideoQueue($storyId);
 		}else{
 			$mysql->setVideoStatus($storyId, VideoStatus::error, $url=null);	
-			// $bot->cleanup();
+			$bot->cleanup();
 		}
 
 		usleep($micro);
