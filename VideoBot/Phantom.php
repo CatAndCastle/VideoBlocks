@@ -15,7 +15,7 @@ class Phantom{
 		$ffmpeg = new FFMpeg();	
 		$command = $this->exec . " " . $storyId  . " | " . $ffmpeg->framesToVideoCMD($f);
 		
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 	}
 

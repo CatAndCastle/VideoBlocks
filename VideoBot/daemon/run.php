@@ -18,6 +18,8 @@ $sqs = new SQS();
 $s3 = new AWSS3();
 $mysql = new Mysql();
 
+$sqs->pushToVideoQueue("HotZBTafWalh");
+
 while(true){
 	// fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
@@ -33,8 +35,8 @@ echo "got story $storyId\n";
 	$sqs->deleteMessage(SQSQueue::Video, $msg);
 
 	// render video
-	// $mysql->setVideoStatus($storyId, VideoStatus::rendering, $url=null);
-	
+	$mysql->setVideoStatus($storyId, VideoStatus::rendering, $url=null);
+
 	//render video
 echo "rendering...\n";
 	$bot = new VideoBot($storyId);
@@ -48,17 +50,17 @@ echo "rendering...\n";
 		continue;
 	}
 
-echo "saved file $v";
-echo "uploading to s3...";
+echo "saved file $v\n";
+echo "uploading to s3...\n";
 
 	// upload $v to AWS
-	$s3->upload(S3Bucket::Video, $v, true);
-
+	$uploadedUrl = $s3->upload(S3Bucket::Video, $v, $storyId."/".pathinfo($v)['basename'], true);
+echo "upoaded to $uploadedUrl\n";
 	// update status
-	// $mysql->setVideoStatus($storyId, VideoStatus::done, $webUrl);
+	$mysql->setVideoStatus($storyId, VideoStatus::done, $uploadedUrl);
 
 echo "cleanup...";
-	// $bot->cleanup();
+	$bot->cleanup();
 
 	// // Now before we 'cycle' again, we'll sleep for a bit...
 	// usleep($micro);

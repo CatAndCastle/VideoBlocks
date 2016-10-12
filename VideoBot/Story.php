@@ -58,7 +58,6 @@ class Story{
 			if($idx > $this->_MAX_A || $numvids>$this->_MAX_V){break;}
 			
 			if(!$this->isValid($asset)){
-				echo "NOT VALID\n";
 				continue;
 			}
 

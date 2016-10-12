@@ -17,7 +17,7 @@ class FFmpeg{
 	function splitIntoFrames($url, $dir){
 		makedir($dir, 0777);
 		$command = $this->ffmpeg . " -i $url -r 29.97 -ss 0 -t ".$this->max_vid_t." ".$dir."/frame%d.png";
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 	}
 
@@ -26,7 +26,7 @@ class FFmpeg{
 	**/
 	function extractAudio($url, $out){
 		$command = $this->ffmpeg . " -y -i $url -map 0:1 $out";
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 	}
 
@@ -37,7 +37,7 @@ class FFmpeg{
 
 	// ffmpeg -y -v error -i .data/bGwcqDbkZ3l9/video.mp4 -ss 0 -t 38 -i .data/bGwcqDbkZ3l9/audio.aac -vf fade=t=in:s=0:n=30 -af "afade=t=in:st=0:d=3,afade=t=out:st=35.00:d=3" -map 0:0 -map 1:0 .data/bGwcqDbkZ3l9/final1.mp4
 	function combineAV($v, $a, $f){
-		if($a = null){
+		if(is_null($a)){
 			rename($v, $f);
 			return;
 		}

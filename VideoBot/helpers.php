@@ -30,20 +30,19 @@ function makedir($dir){
     }
 }
 
-function rrmdir($dir) { 
-    if (is_dir($dir)) { 
-        $objects = scandir($dir); 
-        foreach ($objects as $object) { 
-            if ($object != "." && $object != "..") { 
-                if (is_dir($dir."/".$object)){
-                    rrmdir($dir."/".$object);
-                }
-            }else{
-               unlink($dir."/".$object); 
-            } 
+function rrmdir($dir) {
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (filetype($dir."/".$object) == "dir") 
+                    rrmdir($dir."/".$object); 
+            else unlink   ($dir."/".$object);
         }
-    rmdir($dir); 
-    } 
+    }
+    reset($objects);
+    rmdir($dir);
+    }
  }
 
 ?>
