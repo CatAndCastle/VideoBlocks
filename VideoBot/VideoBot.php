@@ -78,7 +78,7 @@ class VideoBot{
 	}
 
 	function cleanup(){
-		// rrmdir($this->dir);
+		rrmdir($this->dir);
 	}
 }
 
