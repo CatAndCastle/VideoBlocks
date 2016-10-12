@@ -92,9 +92,9 @@ class Story{
 					$asset['n_frames'] = min($info->video->n_frames, floor($info->video->frame_rate * $this->ffmpeg->max_vid_t));
 					$asset['has_audio'] = $info->audio != null;
 					
-					$dir = '.data/'.$this->storyId.'/videos/'.$id;
+					$dir = $this->dir.'/videos/'.$id;
 					$this->ffmpeg->splitIntoFrames($url, $dir);
-					$asset['dir'] = $dir."/";
+					$asset['dir'] = '.data/'.$this->storyId.'/videos/'.$id."/";
 
 					if(count($videos)>0 && $info->video->duration > $videos[0]['duration'] && $asset['has_audio']){
 						array_unshift($videos, $asset);
