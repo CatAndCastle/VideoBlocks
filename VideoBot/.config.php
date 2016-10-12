@@ -1,4 +1,5 @@
 <?php
+	// define('API_URL', 'http://zeroslant.local/api/v0.2/');
 	define('API_URL', 'http://zeroslant.com/api/v0.2/');
 	
 	define('FFMPEG_BIN', 'ffmpeg');

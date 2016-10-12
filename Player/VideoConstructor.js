@@ -4,7 +4,7 @@ var VideoConstructor = function(params){
 	this.storyId = '';
 	this.blockIdx = 1;
 	this.frameRate = 29.97;
-	this.numBlocks = 1;
+	this.numBlocks = 5;
 	
 	this.animationItem = null;
 	this.renderParams = {
@@ -57,6 +57,9 @@ VideoConstructor.prototype.startRender = function(){
 
 VideoConstructor.prototype.goToNextFrame = function(){
 	if(this.animationItem == null && this.blockIdx>this.numBlocks){
+		// if (CONFIG.platform == 'phantom'){
+		// 	this.story.saveData();
+		// }
 		return false;
 	}
 	if(this.animationItem == null && this.blockIdx<=this.numBlocks){

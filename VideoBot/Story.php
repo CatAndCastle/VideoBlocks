@@ -6,6 +6,8 @@ class Story{
 	public $_MAX_A = 50;
 	public $error = false;
 
+	public $hashtags = [];
+
 	function __construct($storyId, $dataDir)
 	{
 		
@@ -21,7 +23,7 @@ class Story{
 	}
 
 	function load(){
-		$data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords');
+		$data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords,hashtags');
 		$this->story = json_decode($data, true);
 
 		if(count($this->story['body'])==0){
@@ -31,6 +33,15 @@ class Story{
 
 	function writeJSON($f){
 		writeToFile($f,  $this->story);
+	}
+
+	function writeHashtags($f){
+		$write = [
+			"assets" => [],
+			"hashtags" => $this->story['hashtags'],
+			"users" => [],
+		];
+		writeToFile($f,  $write);
 	}
 
 	function saveMainAudio(){
@@ -81,7 +92,7 @@ class Story{
 					$asset['n_frames'] = min($info->video->n_frames, floor($info->video->frame_rate * $this->ffmpeg->max_vid_t));
 					$asset['has_audio'] = $info->audio != null;
 					
-					$dir = $this->dir.'/videos/'.$id;
+					$dir = '.data/'.$this->storyId.'/videos/'.$id;
 					$this->ffmpeg->splitIntoFrames($url, $dir);
 					$asset['dir'] = $dir."/";
 
@@ -106,10 +117,20 @@ class Story{
 					array_push($images, $asset);
 				}
 			}
+
+			// count hashtags
+			if(count($this->story['hashtags']) == 0){
+				$this->countHashtags($asset);
+			}
 		}
 
 
 		$this->story['body'] = array_merge($videos, $images);
+		// count hashtags
+		if(count($this->story['hashtags']) == 0){
+			arsort($this->hashtags);
+			$this->story['hashtags'] = array_keys(array_slice($this->hashtags, 0, 10));
+		}
 	}
 
 	function cleanText($text){
@@ -162,6 +183,17 @@ class Story{
 
 		return false;
 
+	}
+
+	function countHashtags($asset){
+		foreach ($asset['tags'] as $idx => $tag) {
+			$tag = "#".$tag;
+			if(array_key_exists($tag, $this->hashtags)){
+				$this->hashtags[$tag] ++;
+			}else{
+				$this->hashtags[$tag] = 0;
+			}
+		}
 	}
 
 }

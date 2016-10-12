@@ -36,7 +36,7 @@ class FFmpeg{
 	}
 
 	// ffmpeg -y -v error -i .data/bGwcqDbkZ3l9/video.mp4 -ss 0 -t 38 -i .data/bGwcqDbkZ3l9/audio.aac -vf fade=t=in:s=0:n=30 -af "afade=t=in:st=0:d=3,afade=t=out:st=35.00:d=3" -map 0:0 -map 1:0 .data/bGwcqDbkZ3l9/final1.mp4
-	function combineAV($v, $a, $f){
+	function combineAV($v, $a, $f, $dir){
 		if(is_null($a)){
 			rename($v, $f);
 			return;
@@ -68,7 +68,7 @@ class FFmpeg{
 								. " -af 'afade=t=in:st=5:d=3,afade=t=out:st=$t_fade_audio:d=3'"
 								. " -map 0:0 -map 1:0 $f";
 
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 
 
@@ -76,7 +76,7 @@ class FFmpeg{
 
 	function silentAudio($t, $f){
 		$command = $this->ffmpeg . " -y -f lavfi -i aevalsrc=0:d=$t $f";
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 
 	}
@@ -85,7 +85,7 @@ class FFmpeg{
 
 	function concatAudio($a1, $a2, $f){
 		$command = $this->ffmpeg . " -y -i $a1 -i $a2 -filter_complex '[0:0] [1:0] concat=n=2:v=0:a=1 [a]' -map [a] $f";
-		echo $command."\n";
+		// echo $command."\n";
 		shell_exec($command);
 
 

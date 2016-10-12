@@ -9,19 +9,15 @@ require_once __DIR__.'/includes/Mysql.php';
 
 // The worker will execute every X seconds:
 $seconds = 2;
-
-// We work out the micro seconds ready to be used by the 'usleep' function.
 $micro = $seconds * 1000000;
 
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
 $mysql = new Mysql();
-
-$sqs->pushToVideoQueue("HotZBTafWalh");
-
+// $sqs->pushToVideoQueue('yCy2YLHiedlF');
 while(true){
-	// fetch storyId from SQS
+	// Fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
 	if(!$msgs['Messages']){
 		usleep($micro);
@@ -30,40 +26,40 @@ while(true){
 
 	$msg = $msgs['Messages'][0];
 	$storyId = $msg['Body'];
-echo "got story $storyId\n";
-	// remove from queue
+	echo "rendering story $storyId\n";
+	
+	// Remove from queue
 	$sqs->deleteMessage(SQSQueue::Video, $msg);
 
-	// render video
+	// Set rendering status
 	$mysql->setVideoStatus($storyId, VideoStatus::rendering, $url=null);
 
-	//render video
-echo "rendering...\n";
+	// Render video
 	$bot = new VideoBot($storyId);
 	$v = $bot->render();
 
 	if(!$v){
-		echo "ERROR rendering\n";
-		$mysql->setVideoStatus($storyId, VideoStatus::error, $url=null);
-		// $sqs->pushToVideoQueue($storyId);
+		echo "ERROR rendering $storyId \n";
+		$mysql->setVideoStatus($storyId, VideoStatus::error, $url=null);	
 		$bot->cleanup();
+		usleep($micro);
 		continue;
 	}
 
-echo "saved file $v\n";
-echo "uploading to s3...\n";
-
-	// upload $v to AWS
+	// Upload vid + data to AWS
 	$uploadedUrl = $s3->upload(S3Bucket::Video, $v, $storyId."/".pathinfo($v)['basename'], true);
-echo "upoaded to $uploadedUrl\n";
-	// update status
+	if(file_exists($bot->dir."/data.json")){
+		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
+	}
+
+	// Update status
 	$mysql->setVideoStatus($storyId, VideoStatus::done, $uploadedUrl);
 
-echo "cleanup...";
+	// Delete working dir
 	$bot->cleanup();
 
-	// // Now before we 'cycle' again, we'll sleep for a bit...
-	// usleep($micro);
+	// Sleep before next cycle
+	usleep($micro);
 }
 
 

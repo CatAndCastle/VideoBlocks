@@ -20,6 +20,7 @@ class VideoBot{
 	public $storyId;
 	public $audio;
 	public $video;
+	public $dir;
 
 	function __construct($storyId){
 		$this->storyId 	= $storyId;
@@ -55,6 +56,7 @@ class VideoBot{
 		}
 		$s->processAssets();
 		$s->writeJSON($this->dir."/story.json");
+		$s->writeHashtags($this->dir."/data.json");
 		$this->audio = $s->saveMainAudio();
 	}
 
@@ -64,7 +66,7 @@ class VideoBot{
 		$phantom->renderVideo($this->storyId, $this->video);
 
 		$ffmpeg = new FFmpeg();
-		$ffmpeg->combineAV($this->video, $this->audio, $this->dir."/".$this->finalName());
+		$ffmpeg->combineAV($this->video, $this->audio, $this->dir."/".$this->finalName(), $this->dir);
 	}
 
 	function finalName(){
