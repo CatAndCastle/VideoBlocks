@@ -8,7 +8,7 @@ var args = system.args;
 var page = webPage.create();
 
 var STORYID = args[1];
-var url = "http://zeroslant.local/blocks/render.html?p=phantom&renderer=svg&storyId="+STORYID;
+var url = "blocks.local/render.html?p=phantom&renderer=svg&storyId="+STORYID;
 
 
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
