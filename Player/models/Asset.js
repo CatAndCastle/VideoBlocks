@@ -77,3 +77,7 @@ Asset.prototype.get = function(key){
 Asset.prototype.isVideo = function(){
 	return this.type === 'video';
 }
+
+Asset.prototype.getUser = function(){
+	return {platform: this.platform, username: this.username};
+}
