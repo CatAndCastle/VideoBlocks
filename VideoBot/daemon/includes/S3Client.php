@@ -22,22 +22,24 @@ class AWSS3{
 		));
 	}
 
-	public function upload($bucket, $file, $wait){
-		$name = pathinfo($file)['basename'];
+	public function upload($bucket, $file, $key, $wait){
 
 		$this->client->putObject(array(
 		    'Bucket'     => $bucket,
-		    'Key'        => $name,
-		    'SourceFile' => $file
+		    'Key'        => $key,
+		    'SourceFile' => $file,
+		    'ACL'        => 'public-read',
 		));
 
 		if($wait){
 			// We can poll the object until it is accessible
 			$this->client->waitUntil('ObjectExists', array(
 			    'Bucket' => $bucket,
-			    'Key'    => $name
+			    'Key'    => $key
 			));
 		}
+
+		return "https://s3.amazonaws.com/video.zeroslant.com/".$key;
 	}
 
 }

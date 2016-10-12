@@ -3,7 +3,6 @@
 class Mysql{
 
 	public $conn;
-    protected $supportPhoneNumbers;
 	function __construct(){
 		// runs as soon as class is instantiated
         $this->supportPhoneNumbers = true;
@@ -12,7 +11,28 @@ class Mysql{
 		mysqli_report(MYSQLI_REPORT_STRICT);
 	}
 
-	/**
+    function setVideoStatus($storyId, $status, $url=null){
+    	if(!is_null($url)){
+    		$q = "INSERT INTO videos (storyId, url, status) VALUES (?,?,?) ON DUPLICATE KEY UPDATE url=?, status=?";
+    		$this->query($q, [['s',$storyId], ['s',$url], ['i',$status], ['s',$url], ['i',$status]]);
+    	}else{
+    		$q = "INSERT INTO videos (storyId, status) VALUES (?,?) ON DUPLICATE KEY UPDATE status=?";	
+    		$this->query($q, [['s',$storyId], ['i',$status], ['i',$status]]);
+    	}
+    }
+
+    function refValues($arr){
+        if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
+        {
+            $refs = array();
+            foreach($arr as $key => $value)
+                $refs[$key] = &$arr[$key];
+            return $refs;
+        }
+        return $arr;
+    }
+
+    /**
     *   Run Query
     */
     function query($query, $params)
@@ -33,6 +53,7 @@ class Mysql{
             array_unshift($args, $pt);
 
             $a = &$args;
+            // echo json_encode($this->refValues($args));
             call_user_func_array(array($stmt, 'bind_param'), $this->refValues($args));
         }
 
@@ -47,6 +68,11 @@ class Mysql{
                 'error' => $error,
                 'affected_rows' => $affected_rows
             );
+        // /* Fetch result to array */
+        // $res = $stmt->get_result();
+        // while($row = $res->fetch_array(MYSQLI_ASSOC)) {
+        //   array_push($a_data, $row);
+        // }
     }
 
     /**
@@ -56,6 +82,8 @@ class Mysql{
     {
         $query = $query;
         $stmt = $this->conn->prepare($query);
+        // echo($query);
+        // print_r($params);
 
         if(count($params) > 0)
         {
@@ -76,7 +104,7 @@ class Mysql{
         $stmt->execute();
         // echo $stmt->error;
         
-        // Fetch result to array 
+        /* Fetch result to array */
         $res = $stmt->get_result();
         $data = array();
         while($row = $res->fetch_array(MYSQLI_ASSOC)) {
@@ -85,27 +113,6 @@ class Mysql{
 
         $stmt->close();
         return $data;
-    }
-
-    function refValues($arr){
-        if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
-        {
-            $refs = array();
-            foreach($arr as $key => $value)
-                $refs[$key] = &$arr[$key];
-            return $refs;
-        }
-        return $arr;
-    }
-
-    function setVideoStatus($storyId, $status, $url=null){
-    	if($url){
-    		$q = "INSERT INTO videos (storyId, url, status) VALUES (?,?,?) ON DUPLICATE KEY UPDATE url=?, status=?";
-    		$this->query($q, ['s'=>$storyId, 's'=>$url, 's'=>$status, 's'=>$url, 's'=>$status]);
-    	}else{
-    		$q = "INSERT INTO videos (storyId, status) VALUES (?,?) ON DUPLICATE KEY UPDATE status=?";
-    		$this->query($q, ['s'=>$storyId, 's'=>$status, 's'=>$status]);
-    	}
     }
 
 }
