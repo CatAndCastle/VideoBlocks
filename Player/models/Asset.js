@@ -44,7 +44,7 @@ Asset.prototype.get = function(key){
 	        return {text: t, fc:[0,0,0], mf:40}
 	        break;
 	    case 'hashtags':
-	    	if(this.tags.length == 0){
+	    	if(!('tags' in this) || this.tags.length == 0){
 	    		return {text: "", fc:[236/255,114/255,99/255], mf:20};
 	    		break;
 	    	}

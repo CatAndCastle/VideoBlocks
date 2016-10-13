@@ -14,6 +14,7 @@ function logme($txt){
 }
 
 function setVideoStatus($storyId, $status, $url, $i){
+	// return true;
 	try{
 		$mysql = new Mysql();
 		$mysql->setVideoStatus($storyId, $status, $url);
@@ -39,7 +40,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("LD0sKsujV58d");
+// $sqs->pushToVideoQueue("38VydMtRADF9");
 while(true){
 	// Fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);

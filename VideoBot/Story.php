@@ -183,34 +183,40 @@ class Story{
 		}
 
 		// Require text, not just tags
-		$a = explode(" ", $asset['text']);
-		if(count($a) <= count($asset['tags'])){
-			// logme("error 3");
-			return false;
+		if(array_key_exists('tags', $asset)){
+			$a = explode(" ", $asset['text']);
+			if(count($a) <= count($asset['tags'])){
+				// logme("error 3");
+				return false;
+			}
 		}
 
 		// Require keywords
-		if(count($this->story['keywords']) > 0){
+		if(count($this->story['keywords']) > 3){
 			foreach ($this->story['keywords'] as $kw) {
 				if (strpos(strtolower($asset['text']), strtolower($kw)) !== false) {
 				    return true;
 				} 
 			}
+			// logme("error 4");
+			return false;
 		}else{
 			return true;
 		}
-		// logme("error 4");
+		
 		return false;
 
 	}
 
 	function countHashtags($asset){
-		foreach ($asset['tags'] as $idx => $tag) {
-			$tag = "#".$tag;
-			if(array_key_exists($tag, $this->hashtags)){
-				$this->hashtags[$tag] ++;
-			}else{
-				$this->hashtags[$tag] = 0;
+		if(array_key_exists('tags', $asset)){
+			foreach ($asset['tags'] as $idx => $tag) {
+				$tag = "#".$tag;
+				if(array_key_exists($tag, $this->hashtags)){
+					$this->hashtags[$tag] ++;
+				}else{
+					$this->hashtags[$tag] = 0;
+				}
 			}
 		}
 	}

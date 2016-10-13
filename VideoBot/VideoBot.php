@@ -44,7 +44,7 @@ class VideoBot{
 		    logme('CAUGHT EXCEPTION: '.  $e->getMessage());
 		    return ['status'=>'error', 'error'=>VideoError::STORY_ERROR, 'video'=>null];
 		}
-
+// exit(0);
 		// render
 		try { $this->makeVideo();
 		}catch (PhantomException $e){
