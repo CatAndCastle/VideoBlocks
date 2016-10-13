@@ -9,10 +9,10 @@ require_once 'Story.php';
 
 abstract class VideoStatus
 {
-    const queue = 0;
-    const rendering = 1;
-    const done = 2;
-    const error = 3;
+    const QUEUE = 0;
+    const RENDERING = 1;
+    const DONE = 2;
+    const ERROR = 3;
 }
 
 abstract class VideoError
@@ -41,14 +41,14 @@ class VideoBot{
 		// prepare
 		try { $this->prepare();
 		}catch (Exception $e) {
-		    logme('Caught exception: '.  $e->getMessage());
+		    logme('CAUGHT EXCEPTION: '.  $e->getMessage());
 		    return ['status'=>'error', 'error'=>VideoError::STORY_ERROR, 'video'=>null];
 		}
 
 		// render
 		try { $this->makeVideo();
 		}catch (PhantomException $e){
-			logme('Caught exception: '.  $e->getMessage());
+			logme('CAUGHT EXCEPTION: '.  $e->getMessage());
 			if ($e->getCode() == PhantomException::TIMEOUT){
 				return ['status'=>'error', 'error'=>VideoError::RENDER_TIMEOUT_ERROR, 'video'=>null];
 			}
@@ -70,10 +70,9 @@ class VideoBot{
 
 	function prepare(){
 		$s = new Story($this->storyId, dirname(__DIR__, 1)."/.data/");
-		if($s->error){
-			throw new Exception('Story is empty.');
+		if($s->error !== false){
+			throw new Exception($s->error);
 		}
-		$s->processAssets();
 		$s->writeJSON($this->dir."/story.json");
 		$s->writeHashtags($this->dir."/data.json");
 		$this->audio = $s->saveMainAudio();

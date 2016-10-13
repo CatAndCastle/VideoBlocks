@@ -3,14 +3,13 @@ use Aws\Sqs\SqsClient;
 
 abstract class SQSQueue
 {
-    const Video = "https://sqs.us-east-1.amazonaws.com/568183857234/zeroslant_video";
+    const Video = "https://sqs.us-east-1.amazonaws.com/568183857234/zeroslant_video_test";
 }
 
 class SQS{
+	
 	public $client;
-
 	private $REGION = "us-east-1";
-	private $VIDEO_QUEUE_URL = "https://sqs.us-east-1.amazonaws.com/568183857234/zeroslant_video";
 
 	function __construct(){
 		

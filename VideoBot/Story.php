@@ -1,5 +1,12 @@
 <?php
 
+abstract class StoryError
+{
+    const EMPTY_STORY = "Story is empty.";
+    const NOT_ENOUGH_VALID_POSTS = "Not enough valid posts in Story.";
+
+}
+
 class Story{
 
 	public $_MAX_V = 7;
@@ -26,9 +33,14 @@ class Story{
 		$data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords,hashtags');
 		$this->story = json_decode($data, true);
 
-		if(count($this->story['body'])<2){
-			$this->error = true;
-		} 
+		if(count($this->story['body'])==0){
+			$this->error = StoryError::STORY_EMPTY;
+		} else{
+			$this->processAssets();
+			if(count($this->story['body'])<3){
+				$this->error = StoryError::NOT_ENOUGH_VALID_POSTS;
+			} 
+		}
 	}
 
 	function writeJSON($f){
@@ -157,20 +169,23 @@ class Story{
 	}
 
 	function isValid($asset){
-		
+		// logme($asset['text']);
 		// must be image or video
 		if($asset['type'] != 'video' && $asset['type'] != 'image'){
+			// logme("error 1");
 			return false;
 		}
 
 		// Require a caption
 		if( empty($asset['text']) ){
+			// logme("error 2");
 			return false;
 		}
 
 		// Require text, not just tags
 		$a = explode(" ", $asset['text']);
 		if(count($a) <= count($asset['tags'])){
+			// logme("error 3");
 			return false;
 		}
 
@@ -182,7 +197,7 @@ class Story{
 				} 
 			}
 		}
-
+		// logme("error 4");
 		return false;
 
 	}

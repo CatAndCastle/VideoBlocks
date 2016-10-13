@@ -39,7 +39,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-
+$sqs->pushToVideoQueue("LD0sKsujV58d");
 while(true){
 	// Fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
@@ -58,7 +58,7 @@ while(true){
 	$sqs->deleteMessage(SQSQueue::Video, $msg);
 
 	// Set rendering status
-	if(!setVideoStatus($storyId, VideoStatus::rendering, null, 0)){	
+	if(!setVideoStatus($storyId, VideoStatus::RENDERING, null, 0)){	
 		$sqs->pushToVideoQueue($storyId);
 		usleep($micro);
 		continue;
@@ -72,11 +72,11 @@ while(true){
 		$e = $res['error'];
 		if($e == VideoError::RENDER_TIMEOUT_ERROR){
 			// page hung up -> try again
-			setVideoStatus($storyId, VideoStatus::queue, null, 0);
+			setVideoStatus($storyId, VideoStatus::QUEUE, null, 0);
 			$bot->cleanup();
 			$sqs->pushToVideoQueue($storyId);
 		}else{
-			setVideoStatus($storyId, VideoStatus::error, null, 0);	
+			setVideoStatus($storyId, VideoStatus::ERROR, null, 0);	
 			$bot->cleanup();
 		}
 
@@ -92,7 +92,7 @@ while(true){
 	}
 
 	// Update status
-	setVideoStatus($storyId, VideoStatus::done, $uploadedUrl, 0);	
+	setVideoStatus($storyId, VideoStatus::DONE, $uploadedUrl, 0);	
 	
 	// Delete working dir
 	$bot->cleanup();
