@@ -3,6 +3,7 @@ var TemplateManager = function(params){
 	this.type = 'default';
 	this.folder = '_templates/';
 	this.configure(params);
+	this.previousBlock = "";
 
 
 }
@@ -54,8 +55,13 @@ TemplateManager.prototype.getEndBlock = function(){
 }
 
 TemplateManager.prototype.getContentBlock = function(){
-	var path =  this.folder + this.CONTENT_TEMPLATES.random() + '/data.json';
-	return this.loadBlock(path);
+	// don't show the same block a row
+	var tmp = this.CONTENT_TEMPLATES.slice();
+	if(tmp.indexOf(this.previousBlock) > -1){
+		tmp.splice(tmp.indexOf(this.previousBlock), 1);
+	}
+	this.previousBlock =  tmp.random();
+	return this.loadBlock(this.folder + this.previousBlock + '/data.json');
 }
 
 TemplateManager.prototype.loadBlock = function(path){
