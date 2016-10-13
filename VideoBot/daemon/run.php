@@ -100,7 +100,7 @@ while(true){
 	// logme time
 	$time_end = microtime(true);
 	$time = ceil($time_end - $time_start);
-	logme("$storyId t = $time\n");
+	logme("$storyId t = $time");
 
 	// Sleep before next cycle
 	usleep($micro);
