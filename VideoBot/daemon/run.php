@@ -7,6 +7,30 @@ require_once __DIR__.'/includes/SQSClient.php';
 require_once __DIR__.'/includes/S3Client.php';
 require_once __DIR__.'/includes/Mysql.php';
 require_once dirname(__DIR__, 1).'/exceptions/PhantomException.php';
+require_once dirname(__DIR__, 1).'/exceptions/MysqlException.php';
+
+function logme($txt){
+	echo "[" . date("Y-m-d H:i:s") ."] " . $txt ."\n";
+}
+
+function setVideoStatus($storyId, $status, $url, $i){
+	try{
+		$mysql = new Mysql();
+		$mysql->setVideoStatus($storyId, $status, $url);
+		$mysql->close();
+		return true;
+	}
+	catch (MysqlException $e){
+		logme($e->getMessage());
+
+		if($i < 5){
+			usleep(5000000);
+			setVideoStatus($storyId, $status, $url, $i++);
+		}else{
+			return false;
+		}
+	}
+}
 
 // The worker will execute every X seconds:
 $seconds = 5;
@@ -15,7 +39,6 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-$mysql = new Mysql();
 
 while(true){
 	// Fetch storyId from SQS
@@ -28,14 +51,18 @@ while(true){
 	$msg = $msgs['Messages'][0];
 	$storyId = $msg['Body'];
 
-	echo "rendering story $storyId\n";
+	logme("rendering story $storyId");
 	$time_start = microtime(true);
 	
 	// Remove from queue
 	$sqs->deleteMessage(SQSQueue::Video, $msg);
 
 	// Set rendering status
-	$mysql->setVideoStatus($storyId, VideoStatus::rendering, $url=null);
+	if(!setVideoStatus($storyId, VideoStatus::rendering, null, 0)){	
+		$sqs->pushToVideoQueue($storyId);
+		usleep($micro);
+		continue;
+	}
 
 	// Render video
 	$bot = new VideoBot($storyId);
@@ -45,11 +72,11 @@ while(true){
 		$e = $res['error'];
 		if($e == VideoError::RENDER_TIMEOUT_ERROR){
 			// page hung up -> try again
-			$mysql->setVideoStatus($storyId, VideoStatus::queue, $url=null);
+			setVideoStatus($storyId, VideoStatus::queue, null, 0);
 			$bot->cleanup();
 			$sqs->pushToVideoQueue($storyId);
 		}else{
-			$mysql->setVideoStatus($storyId, VideoStatus::error, $url=null);	
+			setVideoStatus($storyId, VideoStatus::error, null, 0);	
 			$bot->cleanup();
 		}
 
@@ -65,15 +92,15 @@ while(true){
 	}
 
 	// Update status
-	$mysql->setVideoStatus($storyId, VideoStatus::done, $uploadedUrl);
-
+	setVideoStatus($storyId, VideoStatus::done, $uploadedUrl, 0);	
+	
 	// Delete working dir
 	$bot->cleanup();
 
-	// log time
+	// logme time
 	$time_end = microtime(true);
 	$time = ceil($time_end - $time_start);
-	echo "t = $time\n";
+	logme("$storyId t = $time\n");
 
 	// Sleep before next cycle
 	usleep($micro);

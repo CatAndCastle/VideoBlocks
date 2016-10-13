@@ -41,14 +41,14 @@ class VideoBot{
 		// prepare
 		try { $this->prepare();
 		}catch (Exception $e) {
-		    echo 'Caught exception: ',  $e->getMessage(), "\n";
+		    logme('Caught exception: '.  $e->getMessage());
 		    return ['status'=>'error', 'error'=>VideoError::STORY_ERROR, 'video'=>null];
 		}
 
 		// render
 		try { $this->makeVideo();
 		}catch (PhantomException $e){
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			logme('Caught exception: '.  $e->getMessage());
 			if ($e->getCode() == PhantomException::TIMEOUT){
 				return ['status'=>'error', 'error'=>VideoError::RENDER_TIMEOUT_ERROR, 'video'=>null];
 			}
