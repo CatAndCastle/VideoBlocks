@@ -196,6 +196,8 @@ class Story{
 				    return true;
 				} 
 			}
+		}else{
+			return true;
 		}
 		// logme("error 4");
 		return false;
