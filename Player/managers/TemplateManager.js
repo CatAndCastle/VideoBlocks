@@ -23,13 +23,13 @@ TemplateManager.prototype.configure = function(params){
 
 	this.END_TEMPLATES = ['ZS_Template_SPLIT_EndState_01'];
 	this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01', 
-								'ZS_Template_SPLIT_QuoteWPhoto_02', 
+								// 'ZS_Template_SPLIT_QuoteWPhoto_02', 
 								'ZS_Template_SPLIT_Photos_01', 
 								'ZS_Template_Float_Photos_01', 
 								'ZS_Template_FLOAT_Quote_01', 
 								'ZS_Template_FLOAT_Quote_02', 
 								'ZS_Template_FLOAT_Quote_03'];
-	// this.CONTENT_TEMPLATES = ['ZS_Template_Float_Photos_01'];
+	// this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_Photos_01'];
 
 
 }
@@ -54,7 +54,7 @@ TemplateManager.prototype.getEndBlock = function(){
 	return this.loadBlock(path);
 }
 
-TemplateManager.prototype.getContentBlock = function(){
+TemplateManager.prototype.getContentBlock = function(params){
 	// don't show the same block a row
 	var tmp = this.CONTENT_TEMPLATES.slice();
 	if(tmp.indexOf(this.previousBlock) > -1){

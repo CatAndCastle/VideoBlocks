@@ -75,6 +75,7 @@ Block.prototype.fillTemplate = function(data){
 	console.log(data);
 	for(var i=0; i<this.animationData.placeholders.assets.length; i++){
 		this.fillData(this.animationData.placeholders.assets[i], data[i]);
+		return {error:false}; 
 	}
 
 }

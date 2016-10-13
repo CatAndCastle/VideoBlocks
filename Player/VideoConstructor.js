@@ -86,9 +86,9 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 	this.renderParams.autoplay = autoplay;
 
 	bodymovin.destroy();
-	// console.log(this.renderParams.animationData);
+	console.log(this.renderParams.animationData);
 	this.animationItem =  bodymovin.loadAnimation(this.renderParams);
-	// console.log(this.animationItem);
+	console.log(this.animationItem);
 	
 	this.animationItem.addEventListener('DOMLoaded', function(){
         console.log(" - loaded");
@@ -122,8 +122,12 @@ VideoConstructor.prototype.getNextBlock = function(){
     	var block = this.TM.getEndBlock();
 	}
 	else{
-  		var block = this.TM.getContentBlock();
-        block.fillTemplate(this.story.getAssets(block.animationData.placeholders.assets.length));
+  		var block = this.TM.getContentBlock({maxAssets: this.story.numAssetsLeft()});
+        res = block.fillTemplate(this.story.getAssets(block.animationData.placeholders.assets.length));
+        if(res.error){
+        	this.blockIdx = this.numBlocks
+        	return this.TM.getEndBlock();
+        }
 	}
 	// frames in block
 	// this.totalFrames = Math.floor(this.animationData.op - this.animationData.ip);

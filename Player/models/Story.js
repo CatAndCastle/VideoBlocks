@@ -55,6 +55,10 @@ Story.prototype.getAsset = function(idx){
 	return asset;
 }
 
+Story.prototype.numAssetsLeft = function(){
+	return this.body.length;
+}
+
 Story.prototype.getAssets = function(num){
 	var arr = []
 	for(var i=0; i<Math.min(num, this.body.length); i++){
