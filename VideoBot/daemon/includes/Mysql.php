@@ -5,11 +5,21 @@ class Mysql{
 	public $conn;
 	function __construct(){
 		// runs as soon as class is instantiated
-        $this->supportPhoneNumbers = true;
-		$this->conn = new mysqli(ZEROSLANT_DB_SERVER, ZEROSLANT_DB_USER, ZEROSLANT_DB_PASSWORD, ZEROSLANT_DB_NAME) 
-						or die('Error connecting to the database');
-		mysqli_report(MYSQLI_REPORT_STRICT);
+        mysqli_report(MYSQLI_REPORT_STRICT);
+		try{
+            $this->conn = new mysqli(ZEROSLANT_DB_SERVER, ZEROSLANT_DB_USER, ZEROSLANT_DB_PASSWORD, ZEROSLANT_DB_NAME);
+        } catch (Exception $e ) {
+             logme("ERROR connecting to mysql");
+             logme(" -> message: " . $e->message);   // not in live code obviously...
+             throw new MysqlException('ERROR connecting to mysql', MysqlException::CONNECTION_ERROR);
+             return;
+        }
+		
 	}
+
+    function close(){
+        $this->conn->close();
+    }
 
     function setVideoStatus($storyId, $status, $url=null){
     	if(!is_null($url)){
@@ -64,15 +74,11 @@ class Mysql{
         
         $stmt->close();
 
+
         return array(
                 'error' => $error,
                 'affected_rows' => $affected_rows
             );
-        // /* Fetch result to array */
-        // $res = $stmt->get_result();
-        // while($row = $res->fetch_array(MYSQLI_ASSOC)) {
-        //   array_push($a_data, $row);
-        // }
     }
 
     /**
