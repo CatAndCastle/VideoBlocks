@@ -48,7 +48,7 @@ VideoConstructor.prototype.loadColors = function(){
 VideoConstructor.prototype.loadStoryData = function(){
 	this.story = new Story(this.storyId);
 
-	this.numBlocks = Math.min(this.numBlocks, Math.floor(this.story.body.length/2));
+	this.numBlocks = Math.min(this.numBlocks, 2+Math.floor(this.story.body.length/2));
 }
 
 VideoConstructor.prototype.startRender = function(){

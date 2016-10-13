@@ -26,7 +26,7 @@ class Story{
 		$data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords,hashtags');
 		$this->story = json_decode($data, true);
 
-		if(count($this->story['body'])==0){
+		if(count($this->story['body'])<2){
 			$this->error = true;
 		} 
 	}
