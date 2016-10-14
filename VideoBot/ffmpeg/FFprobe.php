@@ -68,6 +68,7 @@ class FFprobe
         return $info;
     }
 
+    // TODO: check if audio stream is silent - with echoprint-codegen
     public function getAudioStream()
     {
         foreach ($this->streams as $stream) {

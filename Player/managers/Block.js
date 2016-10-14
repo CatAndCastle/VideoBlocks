@@ -93,7 +93,7 @@ Block.prototype.fillData = function (config, asset){
 			if(obj.type == 'text'){
 				self.setText(layer, value);
 			}
-			else if(obj.type == 'image' && asset.type == 'video'){
+			else if(obj.type == 'image' && value.type == 'video'){
 				self.setVideo(layer, value);
 				// self.setImage(layer, value);
 			}

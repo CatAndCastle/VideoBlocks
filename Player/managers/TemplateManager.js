@@ -22,14 +22,13 @@ TemplateManager.prototype.configure = function(params){
 	// this.TITLE_TEMPLATES = ['ZS_Template_FLOAT_Title_01'];
 
 	this.END_TEMPLATES = ['ZS_Template_SPLIT_EndState_01'];
-	this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01', 
-								// 'ZS_Template_SPLIT_QuoteWPhoto_02', 
+	this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01',
 								'ZS_Template_SPLIT_Photos_01', 
 								'ZS_Template_Float_Photos_01', 
 								'ZS_Template_FLOAT_Quote_01', 
 								'ZS_Template_FLOAT_Quote_02', 
 								'ZS_Template_FLOAT_Quote_03'];
-	// this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_Photos_01'];
+	// this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01'];
 
 
 }
@@ -60,6 +59,7 @@ TemplateManager.prototype.getContentBlock = function(params){
 	if(tmp.indexOf(this.previousBlock) > -1){
 		tmp.splice(tmp.indexOf(this.previousBlock), 1);
 	}
+	// pick random block
 	this.previousBlock =  tmp.random();
 	return this.loadBlock(this.folder + this.previousBlock + '/data.json');
 }

@@ -42,7 +42,9 @@ Story.prototype.get = function(key){
 	    	return {text: '@'+this.poster_full.username, fc:[87/255,56/255,92/255], mf:30}
 	    	break;
 	    case 'media':
-	    	return this.poster_full.images.standard_resolution;
+	    	var asset = this.getAssets(1)[0];
+	    	return asset.get('media');
+	    	// return this.poster_full.images.standard_resolution;
 	    	break;
 	    default:
 	        return '';

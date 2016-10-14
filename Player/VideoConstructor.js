@@ -48,7 +48,7 @@ VideoConstructor.prototype.loadColors = function(){
 VideoConstructor.prototype.loadStoryData = function(){
 	this.story = new Story(this.storyId);
 
-	this.numBlocks = Math.min(this.numBlocks, 2+Math.floor(this.story.body.length/2));
+	// this.numBlocks = Math.min(this.numBlocks, 2+Math.floor(this.story.body.length/2));
 }
 
 VideoConstructor.prototype.startRender = function(){
@@ -86,9 +86,9 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 	this.renderParams.autoplay = autoplay;
 
 	bodymovin.destroy();
-	console.log(this.renderParams.animationData);
+	// console.log(this.renderParams.animationData);
 	this.animationItem =  bodymovin.loadAnimation(this.renderParams);
-	console.log(this.animationItem);
+	// console.log(this.animationItem);
 	
 	this.animationItem.addEventListener('DOMLoaded', function(){
         console.log(" - loaded");

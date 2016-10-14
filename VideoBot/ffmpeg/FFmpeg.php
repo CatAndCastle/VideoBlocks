@@ -50,9 +50,9 @@ class FFmpeg{
 		$a_duration = $a_info->audio->duration;
 
 		// pad with 5 secs of silence at the beginnig - for title segment
-		$this->silentAudio(5, $dir."/silent5.aac");
-		$this->concatAudio($dir."/silent5.aac", $a, $dir."/padded_front.aac");
-		$a = $dir."/padded_front.aac";
+		// $this->silentAudio(5, $dir."/silent5.aac");
+		// $this->concatAudio($dir."/silent5.aac", $a, $dir."/padded_front.aac");
+		// $a = $dir."/padded_front.aac";
 
 		$t_fade_audio = min($v_duration, $a_duration)-3;
 
@@ -65,7 +65,7 @@ class FFmpeg{
 		$command = $this->ffmpeg . " -y -i $v "
 								. " -ss 0 -t $v_duration -i $a"
 								. " -c:a aac -c:v copy"
-								. " -af 'afade=t=in:st=5:d=3,afade=t=out:st=$t_fade_audio:d=3'"
+								. " -af 'afade=t=in:st=0:d=3,afade=t=out:st=$t_fade_audio:d=3'"
 								. " -map 0:0 -map 1:0 $f";
 
 		// echo $command."\n";

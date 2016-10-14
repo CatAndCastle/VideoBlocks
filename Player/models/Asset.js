@@ -58,10 +58,13 @@ Asset.prototype.get = function(key){
 	    		data.video = this.videos.standard_resolution;
 	    		data.dir = this.dir;
 	    		data.n_frames = this.n_frames;
+	    		data.type = 'video';
 	    		return data;
 	    		break;
 	    	}else{
-	    		return this.images.standard_resolution;
+	    		var data = this.images.standard_resolution;
+	    		data.type = 'image';
+	    		return data;
 	    		break;
 	    	}
 	    	
