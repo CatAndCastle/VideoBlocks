@@ -34,7 +34,7 @@ class Story{
 		$this->story = json_decode($data, true);
 
 		if(count($this->story['body'])==0){
-			$this->error = StoryError::STORY_EMPTY;
+			$this->error = StoryError::EMPTY_STORY;
 		} else{
 			$this->processAssets();
 			if(count($this->story['body'])<3){
