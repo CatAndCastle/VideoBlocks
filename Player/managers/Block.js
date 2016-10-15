@@ -181,6 +181,7 @@ Block.prototype.setVideo = function(layer, src){
 	}
 
 	obj.u = src.dir;
+	obj.p = 'frame1.png';
 	obj.nf = src.n_frames;
 	// obj.p = src.url;
 	// obj.ty = 9;
@@ -232,5 +233,22 @@ Block.prototype.loadFile = function(path){
             return null;
         }
     }
+}
+
+Block.prototype.findKeyframes = function(){
+	for(var i=0; i<this.animationData.layers.length; i++){
+		var layer = this.animationData.layers[i];
+
+		for (var k in layer){
+		    if (layer.hasOwnProperty(k)) {
+				var obj = layer[k];
+		    }
+		}
+
+	}
+}
+
+Block.prototype.iterate = function(obj){
+
 }
 

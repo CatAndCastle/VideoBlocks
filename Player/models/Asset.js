@@ -34,21 +34,21 @@ Asset.prototype.get = function(key){
 
 	switch(key) {
 	    case 'userhandle':
-	        return {text: '@'+this.username, fc:[255/255,237/255,188/255], mf:30}
+	        return {text: '@'+this.username, fc:COLORS.userhandle, mf:30}
 	        break;
 	    case 'photocredit':
-	    	return {text: '@'+this.username, fc:[87/255,56/255,92/255], mf:30}
+	    	return {text: '@'+this.username, fc:COLORS.photocredit, mf:30}
 	        break;
 	    case 'tweetbody':
 	        var t = this.text; 
-	        return {text: t, fc:[0,0,0], mf:40}
+	        return {text: t, fc:COLORS.tweetbody, mf:40}
 	        break;
 	    case 'hashtags':
 	    	if(!('tags' in this) || this.tags.length == 0){
-	    		return {text: "", fc:[236/255,114/255,99/255], mf:20};
+	    		return {text: "", fc:COLORS.hashtags, mf:20};
 	    		break;
 	    	}
-	    	return {text: '#'+this.tags.slice(0, this._max_tags).join(' #').toUpperCase(), fc:[236/255,114/255,99/255], mf:40}
+	    	return {text: '#'+this.tags.slice(0, this._max_tags).join(' #').toUpperCase(), fc:COLORS.hashtags, mf:40}
 	    	break;
 	    case 'media':
 	    	if (this.type == 'video'){

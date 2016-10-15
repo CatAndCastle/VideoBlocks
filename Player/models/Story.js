@@ -30,16 +30,16 @@ Story.prototype.get = function(key){
 
 	switch(key) {
 	    case 'location':
-	        return {text: this.location.name.toUpperCase(), fc:[236/255,114/255,99/255], mf:30}
+	        return {text: this.location.name.toUpperCase(), fc:COLORS.location, mf:30}
 	        break;
 	    case 'title':
-	    	return {text: this.name.toUpperCase(), fc:[255/255,237/255,188/255], mf:40}
+	    	return {text: this.name.toUpperCase(), fc:COLORS.title, mf:40}
 	        break;
 	    case 'date':
-	        return {text: this.dateString, fc:[236/255,114/255,99/255], mf:20}
+	        return {text: this.dateString, fc:COLORS.date, mf:20}
 	        break;
 	    case 'userhandle':
-	    	return {text: '@'+this.poster_full.username, fc:[87/255,56/255,92/255], mf:30}
+	    	return {text: '@'+this.poster_full.username, fc:COLORS.userhandle, mf:30}
 	    	break;
 	    case 'media':
 	    	var asset = this.getAssets(1)[0];

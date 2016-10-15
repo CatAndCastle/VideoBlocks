@@ -67,6 +67,9 @@ VideoConstructor.prototype.goToNextFrame = function(){
 		this.animationItem.goToAndStop(1,true);
 	}else{
 		if(this.animationItem.currentFrame<this.animationItem.totalFrames){
+			// var tnext = (this.animationItem.currentFrame+1)/this.frameRate;
+			// var nextFrame =  tnext >= 2  && tnext < 8 ? Math.floor(8*this.frameRate) : this.animationItem.currentFrame+1;
+			// this.animationItem.goToAndStop(nextFrame, true);
 			this.animationItem.goToAndStop(this.animationItem.currentFrame+1, true);
 		}
 	}
@@ -86,9 +89,9 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 	this.renderParams.autoplay = autoplay;
 
 	bodymovin.destroy();
-	// console.log(this.renderParams.animationData);
+	console.log(this.renderParams.animationData);
 	this.animationItem =  bodymovin.loadAnimation(this.renderParams);
-	// console.log(this.animationItem);
+	console.log(this.animationItem);
 	
 	this.animationItem.addEventListener('DOMLoaded', function(){
         console.log(" - loaded");

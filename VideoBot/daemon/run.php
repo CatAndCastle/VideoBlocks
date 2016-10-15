@@ -40,7 +40,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("LD0sKsujV58d");
+$sqs->pushToVideoQueue("LD0sKsujV58d");
 while(true){
 	// Fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
@@ -96,7 +96,7 @@ while(true){
 	setVideoStatus($storyId, VideoStatus::DONE, $uploadedUrl, 0);	
 	
 	// Delete working dir
-	$bot->cleanup();
+	// $bot->cleanup();
 
 	// logme time
 	$time_end = microtime(true);

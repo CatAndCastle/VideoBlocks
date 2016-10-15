@@ -1,6 +1,6 @@
 var TemplateManager = function(params){
 	// TYPE can be sports, music, news - different colors, fonts, blocks for each
-	this.type = 'default';
+	this.type = 'black'; //'default';
 	this.folder = '_templates/';
 	this.configure(params);
 	this.previousBlock = "";
@@ -17,18 +17,18 @@ TemplateManager.prototype.configure = function(params){
 	this.loadColors();
 
 	// template sets will depend on this.type
-	this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01', 'ZS_Template_SPLIT_Title_02', 'ZS_Template_SPLIT_Title_03', 'ZS_Template_FLOAT_Title_01'];
-	// this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_03'];
+	this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01', 'ZS_Template_SPLIT_Title_02', 'ZS_Template_SPLIT_Title_03', 'ZS_Template_FLOAT_Title_01']
+	// this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01'];
 	// this.TITLE_TEMPLATES = ['ZS_Template_FLOAT_Title_01'];
 
-	this.END_TEMPLATES = ['ZS_Template_SPLIT_EndState_01'];
+	this.END_TEMPLATES = ['ZS_Template_EndState']; //['ZS_Template_SPLIT_EndState_01'];
 	this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01',
 								'ZS_Template_SPLIT_Photos_01', 
 								'ZS_Template_Float_Photos_01', 
 								'ZS_Template_FLOAT_Quote_01', 
 								'ZS_Template_FLOAT_Quote_02', 
 								'ZS_Template_FLOAT_Quote_03'];
-	// this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01'];
+	// this.CONTENT_TEMPLATES = ['ZS_Template_Float_Photos_01'];
 
 
 }
