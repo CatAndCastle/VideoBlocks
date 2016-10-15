@@ -3,11 +3,11 @@
 	"type": "post",
 	"assets":[
 		{
-			"usericon": [{"idx":7, "type":"image"}],
-			"userhandle": [{"idx":8, "type":"text"}, {"idx":6, "type":"text"}],
-			"tweetbody": [{"idx":9, "type":"text"}],
-			"hashtags": [{"idx":10, "type":"text"}],
-			"media" : [{"idx": 12, "type":"image"}]
+			"usericon": [{"idx":6, "type":"image"}],
+			"userhandle": [{"idx":7, "type":"text"}, {"idx":5, "type":"text"}],
+			"tweetbody": [{"idx":8, "type":"text"}],
+			"hashtags": [{"idx":9, "type":"text"}],
+			"media" : [{"idx": 11, "type":"image"}]
 		}
 	]
 }

@@ -6,8 +6,8 @@
 			"location": [{"idx":6, "type":"text"}],
 			"title": [{"idx":8, "type":"text"}],
 			"date": [{"idx":7, "type":"text"}],
-			"userhandle": [{"idx":11, "type":"text"}],
-			"media" : [{"idx": 12, "type":"image"}]
+			"userhandle": [{"idx":10, "type":"text"}],
+			"media" : [{"idx": 11, "type":"image"}]
 		}
 	]
 }

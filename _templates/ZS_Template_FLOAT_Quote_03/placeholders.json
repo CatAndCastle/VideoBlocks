@@ -3,11 +3,11 @@
 	"type": "post",
 	"assets":[
 		{
-			"usericon": [{"idx":8, "type":"image"}],
-			"userhandle": [{"idx":9, "type":"text"}, {"idx":11, "type":"text"}],
+			"usericon": [{"idx":9, "type":"image"}],
+			"userhandle": [{"idx":7, "type":"text"}, {"idx":10, "type":"text"}],
 			"tweetbody": [{"idx":5, "type":"text"}],
 			"hashtags": [{"idx":6, "type":"text"}],
-			"media" : [{"idx": 12, "type":"image"}]
+			"media" : [{"idx": 11, "type":"image"}]
 		}
 	]
 }

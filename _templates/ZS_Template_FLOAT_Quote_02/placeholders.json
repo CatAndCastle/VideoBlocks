@@ -3,11 +3,10 @@
 	"type": "post",
 	"assets":[
 		{
-			"usericon": [{"idx":5, "type":"image"}],
-			"userhandle": [{"idx":6, "type":"text"}, {"idx":12, "type":"text"}],
+			"userhandle": [{"idx":4, "type":"text"}, {"idx":10, "type":"text"}],
 			"tweetbody": [{"idx":2, "type":"text"}],
 			"hashtags": [{"idx":3, "type":"text"}],
-			"media" : [{"idx": 13, "type":"image"}]
+			"media" : [{"idx": 11, "type":"image"}]
 		}
 	]
 }

@@ -3,11 +3,10 @@
 	"type": "title",
 	"assets":[
 		{
-			"location": [{"idx":3, "type":"text"}],
-			"title": [{"idx":8, "type":"text"}],
-			"date": [{"idx":7, "type":"text"}],
-			"userhandle": [{"idx":13, "type":"text"}],
-			"media" : [{"idx": 14, "type":"image"}]
+			"location": [{"idx":5, "type":"text"}],
+			"title": [{"idx":7, "type":"text"}],
+			"date": [{"idx":4, "type":"text"}],
+			"media" : [{"idx": 10, "type":"image"}]
 		}
 	]
 }
