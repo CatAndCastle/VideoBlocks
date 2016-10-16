@@ -4,7 +4,7 @@ var VideoConstructor = function(params){
 	this.storyId = '';
 	this.blockIdx = 1;
 	this.frameRate = 29.97;
-	this.numBlocks = 6;
+	this.numBlocks = 3;
 	
 	this.animationItem = null;
 	this.renderParams = {

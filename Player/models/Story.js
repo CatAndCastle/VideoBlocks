@@ -33,7 +33,8 @@ Story.prototype.get = function(key){
 	        return {text: this.location.name.toUpperCase(), fc:COLORS.location, mf:30}
 	        break;
 	    case 'title':
-	    	return {text: this.name.toUpperCase(), fc:COLORS.title, mf:40}
+	    	// return {text: this.name.toUpperCase(), fc:COLORS.title, mf:40}
+	    	return {text: "АВГД अइ กฃฅ", fc:COLORS.title, mf:40}
 	        break;
 	    case 'date':
 	        return {text: this.dateString, fc:COLORS.date, mf:20}

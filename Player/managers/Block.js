@@ -130,6 +130,11 @@ Block.prototype.setText = function(layer, v){
 	obj.t.d.t = v.text;
 	obj.t.d.mf = Math.min(v.mf, obj.t.d.s);
 	obj.t.d.f = "NotoSans";
+	if(obj.nm=='title'){
+		obj.t.d.f = "NotoSans-Bold";
+		obj.t.d.fStyle = "bold";
+		obj.t.d.fWeight = 700;
+	}
 	if(v.fc){
 		obj.t.d.fc=v.fc;
 	}
