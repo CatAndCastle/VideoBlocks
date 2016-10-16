@@ -3,10 +3,12 @@
 class FFmpeg{
 
 	public $max_vid_t = 15;
+	// public $default_audio = dirname(__DIR__, 1).'/resources/default_audio.aac';
 
 	function __construct()
 	{
 		$this->ffmpeg = FFMPEG_BIN . " -loglevel quiet";
+		$this->default_audio = dirname(__DIR__, 1).'/resources/default_audio.aac';
 	}
 
 	/**
@@ -54,13 +56,19 @@ class FFmpeg{
 		// $this->concatAudio($dir."/silent5.aac", $a, $dir."/padded_front.aac");
 		// $a = $dir."/padded_front.aac";
 
-		$t_fade_audio = min($v_duration, $a_duration)-3;
+		
 
-		// if($v_duration > $a_duration){
-		// 	$this->silentAudio($v_duration-$a_duration, $dir."/silent_end.aac");
-		// 	$this->concatAudio($dir."/silent_end.aac", $a, $dir."/padded_end.aac");
-		// 	$a = $dir."/padded_end.aac";
-		// }
+		if($v_duration > $a_duration){
+			$this->silentAudio($v_duration-$a_duration, $dir."/silent_end.aac");
+			$padded = $this->concatAudio($a, $dir."/silent_end.aac", $dir."/padded_end.aac");
+
+			// cross fade with default
+			$faded = $this->fadeIntoDefaultAudio($padded, $a_duration-3, $v_duration, $dir."/faded.aac");
+
+			$a = $faded;
+		}
+
+		$t_fade_audio = $v_duration-3; // min($v_duration, $a_duration)-3;
 
 		$command = $this->ffmpeg . " -y -i $v "
 								. " -ss 0 -t $v_duration -i $a"
@@ -78,17 +86,26 @@ class FFmpeg{
 		$command = $this->ffmpeg . " -y -f lavfi -i aevalsrc=0:d=$t $f";
 		// echo $command."\n";
 		shell_exec($command);
+		return $f;
 
 	}
-
-	// ffmpeg -y -v error -i audio.aac -i silent.ac3 -filter_complex [0:0] [1:0] concat=n=2:v=0:a=1 [a] -map [a] /usr/local/zeroslant/video/7WXBh7w7kdIY/padded.aac
-
+	
 	function concatAudio($a1, $a2, $f){
 		$command = $this->ffmpeg . " -y -i $a1 -i $a2 -filter_complex '[0:0] [1:0] concat=n=2:v=0:a=1 [a]' -map [a] $f";
 		// echo $command."\n";
 		shell_exec($command);
+		return $f;
+	}
 
+	function fadeIntoDefaultAudio($a, $tfade, $duration, $f){
+		$command = $this->ffmpeg . " -y -ss 0 -t $duration -i $a"
+								." -ss 0 -t $duration -i ".$this->default_audio
+								." -filter_complex '[0:a]afade=t=out:st=$tfade:d=2[a0]; [1:a]afade=t=in:st=$tfade:d=2[a1]; [a0][a1]amerge=inputs=2[out]'"
+								." -map [out] -ac 2 $f";
 
+		// echo $command."\n";
+		shell_exec($command);
+		return $f;
 	}
 
 	

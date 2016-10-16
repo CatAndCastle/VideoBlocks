@@ -28,7 +28,7 @@ TemplateManager.prototype.configure = function(params){
 								'ZS_Template_FLOAT_Quote_01', 
 								'ZS_Template_FLOAT_Quote_02', 
 								'ZS_Template_FLOAT_Quote_03'];
-	// this.CONTENT_TEMPLATES = ['ZS_Template_Float_Photos_01'];
+	// this.CONTENT_TEMPLATES = ['Block_1', 'Block_2'];
 
 
 }
