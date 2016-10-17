@@ -34,7 +34,7 @@ Story.prototype.get = function(key){
 	        break;
 	    case 'title':
 	    	// return {text: this.name.toUpperCase(), fc:COLORS.title, mf:40}
-	    	return {text: "АВГД अइ กฃฅ", fc:COLORS.title, mf:40}
+	    	return {text: "This is Bold अइ กฃฅ ㌕㌊", fc:COLORS.title, mf:40}
 	        break;
 	    case 'date':
 	        return {text: this.dateString, fc:COLORS.date, mf:20}
