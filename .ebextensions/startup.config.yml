@@ -76,21 +76,13 @@ files:
     content: |
       #!/bin/sh
       mkdir /usr/share/fonts 2>/dev/null
-      mkdir /usr/share/fonts/noto 2>/dev/null
+      cd /usr/share/fonts
       # Install NotoSans
-      cd /var/app/current/_fonts/NotoSans
-      cp *.ttf /usr/share/fonts/noto 
-      # loop through subdirs, cope all fonts
-      for i in *
-        do                 
-          if [ -d $i ]  
-            then
-              cd $i;
-              cp *.ttf /usr/share/fonts/noto 2>/dev/null
-              cp *.ttc /usr/share/fonts/noto 2>/dev/null
-              cd ../
-          fi
-        done
+      wget https://s3.amazonaws.com/fonts.zeroslant.com/NotoSans_Package.zip
+      unzip NotoSans_Package.zip 
+      mv NotoSans_Package noto
+      rm NotoSans_Package.zip
+      rm -rf __MACOSX/
 
   "/opt/elasticbeanstalk/addons/logpublish/hooks/config/start_video_bot.sh":
     mode: "000755"
