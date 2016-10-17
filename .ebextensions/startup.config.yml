@@ -13,7 +13,6 @@ files:
         ServerName default:80
         DocumentRoot /var/www/html
       </VirtualHost>
-
       <VirtualHost *:80>
         DocumentRoot "/var/www/html"
         ServerName blocks.local
@@ -99,10 +98,9 @@ files:
       php /var/app/current/VideoBot/daemon/run.php >/var/app/current/log/video-bot.log 2>/var/app/current/log/video-bot-error.log  &
 
 commands:
-
   02_run_setup:
     command: "/tmp/setup.sh" 
 
 container_commands:
-    copy_fonts:
+    install_fonts:
         command: "/tmp/fonts.sh"
