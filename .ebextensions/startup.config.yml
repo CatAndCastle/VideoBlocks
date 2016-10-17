@@ -1,11 +1,9 @@
 commands:
-
   01_create_post_dir:
     command: "mkdir /opt/elasticbeanstalk/hooks/appdeploy/post"
     ignoreErrors: true
 
 files:
-
   "/etc/httpd/conf.d/vhost.conf" :
     mode: "000755"
     owner: root
@@ -71,6 +69,29 @@ files:
         echo "127.0.0.1   blocks.local" >> /etc/hosts
       fi
 
+  "/tmp/fonts.sh" :
+    mode: "000755"
+    owner: root
+    group: root
+    content: |
+      #!/bin/sh
+      mkdir /usr/share/fonts 2>/dev/null
+      mkdir /usr/share/fonts/noto 2>/dev/null
+      # Install NotoSans
+      cd /var/app/current/_fonts/NotoSans
+      cp *.ttf /usr/share/fonts/noto 
+      # loop through subdirs, cope all fonts
+      for i in *
+        do                 
+          if [ -d $i ]  
+            then
+              cd $i;
+              cp *.ttf /usr/share/fonts/noto 2>/dev/null
+              cp *.ttc /usr/share/fonts/noto 2>/dev/null
+              cd ../
+          fi
+        done
+
   "/opt/elasticbeanstalk/addons/logpublish/hooks/config/start_video_bot.sh":
     mode: "000755"
     owner: root
@@ -89,3 +110,7 @@ commands:
 
   02_run_setup:
     command: "/tmp/setup.sh" 
+
+container_commands:
+    copy_fonts:
+        command: "/tmp/fonts.sh"

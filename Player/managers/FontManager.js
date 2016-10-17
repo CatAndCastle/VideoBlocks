@@ -8,8 +8,8 @@ var FontManager = function(){
 				fName: 'NotoSans',
 				fStyle: 'Regular',
 				fWeight: 400,
-				// fPath: "https://fonts.googleapis.com/css?family=Noto+Sans:400,400i",
-				fPath: "_fonts/NotoSans/NotoSans-Regular.css",
+				fPath: "https://fonts.googleapis.com/css?family=Noto+Sans:400,400i",
+				// fPath: "_fonts/NotoSans/NotoSans-Regular.css",
 				fOrigin: "g",
 				ascent: 75.97
 			},
@@ -18,8 +18,8 @@ var FontManager = function(){
 				fName: 'NotoSans-Bold',
 				fStyle: 'Bold',
 				fWeight: 700,
-				// fPath: "https://fonts.googleapis.com/css?family=Noto+Sans:700,700i",
-				fPath: "_fonts/NotoSans/NotoSans-Bold.css",
+				fPath: "https://fonts.googleapis.com/css?family=Noto+Sans:700,700i",
+				// fPath: "_fonts/NotoSans/NotoSans-Bold.css",
 				fOrigin: "g",
 				ascent: 75.97
 			}
