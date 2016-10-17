@@ -1,6 +1,6 @@
 .dev/*
 .DS_Store
-
+_fonts/NotoSans/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
