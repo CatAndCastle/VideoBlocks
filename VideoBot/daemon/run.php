@@ -40,7 +40,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-$sqs->pushToVideoQueue("mKUG72wO58Ji");
+// $sqs->pushToVideoQueue("mKUG72wO58Ji");
 while(true){
 	// Fetch storyId from SQS
 	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
@@ -87,14 +87,14 @@ while(true){
 	$v = $res['video'];
 
 	// Upload vid + data to AWS
-	// $uploadedUrl = $s3->upload(S3Bucket::Video, $v, $storyId."/".pathinfo($v)['basename'], true);
-	// if(file_exists($bot->dir."/data.json")){
-	// 	$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
-	// }
-	$uploadedUrl = $s3->upload(S3Bucket::Video, $v, 'test.mp4', true);
+	$uploadedUrl = $s3->upload(S3Bucket::Video, $v, $storyId."/".pathinfo($v)['basename'], true);
 	if(file_exists($bot->dir."/data.json")){
-		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", "test.json", true);
+		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
 	}
+	// $uploadedUrl = $s3->upload(S3Bucket::Video, $v, 'test.mp4', true);
+	// if(file_exists($bot->dir."/data.json")){
+	// 	$s3->upload(S3Bucket::Video, $bot->dir."/data.json", "test.json", true);
+	// }
 
 	// Update status
 	setVideoStatus($storyId, VideoStatus::DONE, $uploadedUrl, 0);	
