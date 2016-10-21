@@ -13,22 +13,31 @@ class SQS{
 
 	function __construct(){
 		
-	    $this->client = SqsClient::factory(array(
-		    'credentials' => array(
-		        'key'    => AWS_ACCESS_KEY,
-		        'secret' => AWS_SECRET_KEY,
-		    ),
-		    'region' => 'us-east-1'
-		));
+		try{
+		    $this->client = SqsClient::factory(array(
+			    'credentials' => array(
+			        'key'    => AWS_ACCESS_KEY,
+			        'secret' => AWS_SECRET_KEY,
+			    ),
+			    'region' => 'us-east-1'
+			));
+		} catch (Exception $e) {
+			throw new SQSException('Error connecting to Amazon SQS', SQSException::CONNECTION_ERROR);
+		}
 	}
 
 	public function receiveMessages($queueUrl, $n){
-		return $this->client->receiveMessage(array(
-		    // QueueUrl is required
-		    'QueueUrl' => $queueUrl,
-		    'MaxNumberOfMessages' => $n,
-		    'WaitTimeSeconds' => 5,
-		));
+		try{
+			return $this->client->receiveMessage(array(
+			    // QueueUrl is required
+			    'QueueUrl' => $queueUrl,
+			    'MaxNumberOfMessages' => $n,
+			    'WaitTimeSeconds' => 5,
+			));
+		} catch (Exception $e) {
+			// lost connection to SQS?
+			throw new SQSException('Error connecting to Amazon SQS', SQSException::CONNECTION_ERROR);
+		}
 	}
 
 	public function deleteMessage($queueUrl, $msg){

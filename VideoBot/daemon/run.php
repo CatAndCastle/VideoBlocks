@@ -8,6 +8,7 @@ require_once __DIR__.'/includes/S3Client.php';
 require_once __DIR__.'/includes/Mysql.php';
 require_once dirname(__DIR__, 1).'/exceptions/PhantomException.php';
 require_once dirname(__DIR__, 1).'/exceptions/MysqlException.php';
+require_once dirname(__DIR__, 1).'/exceptions/SQSException.php';
 
 function logme($txt){
 	echo "[" . date("Y-m-d H:i:s") ."] " . $txt ."\n";
@@ -40,10 +41,18 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("mKUG72wO58Ji");
+// $sqs->pushToVideoQueue("r1Qf0EPgXMHa");
 while(true){
 	// Fetch storyId from SQS
-	$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
+	try{
+		$msgs = $sqs->receiveMessages(SQSQueue::Video, 1);
+	}catch (SQSException $e){
+		logme($e->getMessage());
+		// sleep 10 secs
+		usleep(10000000);
+		continue;
+	}
+	
 	if(!$msgs['Messages']){
 		usleep($micro);
 		continue;
@@ -91,9 +100,11 @@ while(true){
 	if(file_exists($bot->dir."/data.json")){
 		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
 	}
-	// $uploadedUrl = $s3->upload(S3Bucket::Video, $v, 'test.mp4', true);
+
+	//DEV
+	// $uploadedUrl = $s3->upload(S3Bucket::Video, $v, "test/".$storyId."/".pathinfo($v)['basename'], true);
 	// if(file_exists($bot->dir."/data.json")){
-	// 	$s3->upload(S3Bucket::Video, $bot->dir."/data.json", "test.json", true);
+	// 	$s3->upload(S3Bucket::Video, $bot->dir."/data.json", "test/".$storyId."/data.json", true);
 	// }
 
 	// Update status
@@ -106,6 +117,7 @@ while(true){
 	$time_end = microtime(true);
 	$time = ceil($time_end - $time_start);
 	logme("$storyId t = $time");
+	// logme($uploadedUrl);
 
 	// Sleep before next cycle
 	usleep($micro);

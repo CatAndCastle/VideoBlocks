@@ -1,7 +1,7 @@
 var TemplateManager = function(params){
 	// TYPE can be sports, music, news - different colors, fonts, blocks for each
-	this.type = 'black'; //'default';
-	this.folder = '_templates/';
+	this.type = 'template_v2';// 'black'; //'default';
+	this.folder = '_templates_v2/';
 	this.configure(params);
 	this.previousBlock = "";
 
@@ -17,19 +17,31 @@ TemplateManager.prototype.configure = function(params){
 	this.loadColors();
 
 	// template sets will depend on this.type
-	this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01', 'ZS_Template_SPLIT_Title_02', 'ZS_Template_SPLIT_Title_03', 'ZS_Template_FLOAT_Title_01']
-	// this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01'];
-	// this.TITLE_TEMPLATES = ['ZS_Template_FLOAT_Title_01'];
+	/* 
+		_templates, _templates_will 
+	*/
+	// this.TITLE_TEMPLATES = ['ZS_Template_SPLIT_Title_01', 'ZS_Template_SPLIT_Title_02', 'ZS_Template_SPLIT_Title_03', 'ZS_Template_FLOAT_Title_01']
+	// this.END_TEMPLATES = ['ZS_Template_EndState'];
+	// this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01',
+	// 							'ZS_Template_SPLIT_Photos_01', 
+	// 							'ZS_Template_Float_Photos_01', 
+	// 							'ZS_Template_FLOAT_Quote_01', 
+	// 							'ZS_Template_FLOAT_Quote_02', 
+	// 							'ZS_Template_FLOAT_Quote_03'];
 
-	this.END_TEMPLATES = ['ZS_Template_EndState']; //['ZS_Template_SPLIT_EndState_01'];
-	this.CONTENT_TEMPLATES = ['ZS_Template_SPLIT_QuoteWPhoto_01',
-								'ZS_Template_SPLIT_Photos_01', 
-								'ZS_Template_Float_Photos_01', 
-								'ZS_Template_FLOAT_Quote_01', 
-								'ZS_Template_FLOAT_Quote_02', 
-								'ZS_Template_FLOAT_Quote_03'];
-	// this.CONTENT_TEMPLATES = ['Block_1', 'Block_2'];
-
+	/* 
+		_templates_v2
+	*/
+	this.TITLE_TEMPLATES = ['TitleCard_01']
+	this.END_TEMPLATES = ['EndCard_01'];
+	this.CONTENT_TEMPLATES = [
+								'Block_01',
+								'Block_02',
+								'Block_03',
+								'Block_04',
+								'Block_05',
+								'Block_06'
+								];
 
 }
 

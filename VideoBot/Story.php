@@ -9,8 +9,8 @@ abstract class StoryError
 
 class Story{
 
-	public $_MAX_V = 7;
-	public $_MAX_A = 50;
+	public $_MAX_V = 20;
+	public $_MAX_A = 100;
 	public $error = false;
 
 	public $hashtags = [];
