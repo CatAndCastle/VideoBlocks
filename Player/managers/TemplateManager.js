@@ -32,7 +32,7 @@ TemplateManager.prototype.configure = function(params){
 	/* 
 		_templates_v2
 	*/
-	this.TITLE_TEMPLATES = ['TitleCard_01']
+	this.TITLE_TEMPLATES = ['TitleCard_01', 'TitleCard_02', 'TitleCard_03'];
 	this.END_TEMPLATES = ['EndCard_01'];
 	this.CONTENT_TEMPLATES = [
 								'Block_01',
