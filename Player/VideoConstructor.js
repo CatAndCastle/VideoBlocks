@@ -64,12 +64,14 @@ VideoConstructor.prototype.goToNextFrame = function(){
 	}
 	if(this.animationItem == null && this.blockIdx<=this.numBlocks){
 		this.loadNextBlock(false);
+		this.currentFrame = 1;
 		this.animationItem.goToAndStop(1,true);
 	}else{
 		if(this.animationItem.currentFrame<this.animationItem.totalFrames){
 			// var tnext = (this.animationItem.currentFrame+1)/this.frameRate;
 			// var nextFrame =  tnext >= 2  && tnext < 8 ? Math.floor(8*this.frameRate) : this.animationItem.currentFrame+1;
 			// this.animationItem.goToAndStop(nextFrame, true);
+			this.currentFrame = this.currentFrame+1;
 			this.animationItem.goToAndStop(this.animationItem.currentFrame+1, true);
 		}
 	}
@@ -117,13 +119,13 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 }
 
 VideoConstructor.prototype.getNextBlock = function(){	
-	if(this.blockIdx == 1){
-		var block = this.TM.getTitleBlock();
-    	block.fillTemplate([this.story]);
-	}
-	else if(this.blockIdx == this.numBlocks){
+	if(this.blockIdx == this.numBlocks){
     	var block = this.TM.getEndBlock();
     	block.fillTemplate(this.story.getAssets(block.animationData.placeholders.assets.length));
+	}
+	else if(this.blockIdx == 1){
+		var block = this.TM.getTitleBlock();
+    	block.fillTemplate([this.story]);
 	}
 	else{
   		var block = this.TM.getContentBlock({maxAssets: this.story.numAssetsLeft()});

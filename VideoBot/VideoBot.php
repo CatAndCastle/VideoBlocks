@@ -46,7 +46,8 @@ class VideoBot{
 		}
 // exit(0);
 		// render
-		try { $this->makeVideo();
+		try { 
+			$this->makeVideo();
 		}catch (PhantomException $e){
 			logme('CAUGHT EXCEPTION: '.  $e->getMessage());
 			if ($e->getCode() == PhantomException::TIMEOUT){
@@ -60,8 +61,9 @@ class VideoBot{
 			}
 		}
 
-		if(file_exists($this->dir."/".$this->finalName())){
-			return ['status'=>'success', 'video'=>$this->dir."/".$this->finalName()];
+		if(file_exists($this->finalFile)){
+			$this->saveThumbnail();
+			return ['status'=>'success', 'video'=>$this->finalFile, 'thumb'=>$this->thumb];
 		}
 		else{
 			return ['status'=>'error', 'error'=>VideoError::RENDER_ERROR, 'video'=>null];
@@ -95,7 +97,14 @@ class VideoBot{
 		}
 
 		$ffmpeg = new FFmpeg();
-		$ffmpeg->combineAV($this->video, $this->audio, $this->dir."/".$this->finalName(), $this->dir);
+		$this->finalFile = $this->dir."/".$this->finalName();
+		$ffmpeg->combineAV($this->video, $this->audio, $this->finalFile, $this->dir);
+	}
+
+	function saveThumbnail(){
+		$ffmpeg = new FFmpeg();
+		$this->thumb = $this->dir."/thumb.jpg";
+		$ffmpeg->saveThumbnail($this->finalFile, $this->thumb);
 	}
 
 	function finalName(){

@@ -18,7 +18,9 @@ var log = storyDir + "/phantomjs.log";
 var error_log = storyDir + "/phantomjs-error.log";
 var timeout_log = storyDir + "/phantomjs-timeout.log";
 
-page.viewportSize = { width: 1920, height: 1080 };
+var _WIDTH = 1920;
+var _HEIGHT = 1080;
+page.viewportSize = { width: _WIDTH, height: _HEIGHT };
 
 page.onCallback = function(data) {
 	if(data['exit']==true){
@@ -26,7 +28,7 @@ page.onCallback = function(data) {
 	}else{
 		// render frame to stdout
 		page.render('/dev/stdout', {format: 'jpeg', quality: '100'});
-		// page.render('frame.jpg', {format: 'jpeg', quality: '100'});
+		// page.render('frames/frame_'+data['frame']+'.jpg', {format: 'jpeg', quality: '100'});
 	}
 };
 
@@ -77,16 +79,16 @@ page.open(url, function start(status) {
 	fs.write(log, "Page open status: " + status +"\n", 'a');
 	page.evaluate(function() {
 
-		document.getElementById("bodymovin").style.width = "1920px";
+		document.getElementById("bodymovin").style.width =  "1920px";
     	document.getElementById("bodymovin").style.height = "1080px";
 
 		function advance(constructor){
 	        var keepgoing = constructor.goToNextFrame();
 	        if(keepgoing){
 	            setTimeout(function(){
-	            	window.callPhantom({ currentFrame: 0, exit:false });
+	            	window.callPhantom({ frame: constructor.currentFrame, exit:false });
 	                advance(constructor);
-	            },50);
+	            },100);
 	        }
 	        else{
 	        	// TODO pass story data to write to local file (assets, hashtags, etc)

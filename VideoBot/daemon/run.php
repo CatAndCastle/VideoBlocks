@@ -41,7 +41,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("r1Qf0EPgXMHa");
+// $sqs->pushToVideoQueue("twvFQwV4YfD7");
 while(true){
 	// Fetch storyId from SQS
 	try{
@@ -94,11 +94,15 @@ while(true){
 		continue;
 	}
 	$v = $res['video'];
+	$thumb = $res['thumb'];
 
 	// Upload vid + data to AWS
 	$uploadedUrl = $s3->upload(S3Bucket::Video, $v, $storyId."/".pathinfo($v)['basename'], true);
+	if(file_exists($thumb)){
+		$s3->upload(S3Bucket::Video, $thumb, $storyId."/poster.jpg", true);
+	}
 	if(file_exists($bot->dir."/data.json")){
-		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
+		// $s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
 	}
 
 	//DEV

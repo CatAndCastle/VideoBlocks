@@ -109,6 +109,12 @@ class FFmpeg{
 		return $f;
 	}
 
+	function saveThumbnail($vid, $out){
+		$command = $this->ffmpeg . " -y -ss 3 -i $vid -vframes 1 $out";
+		shell_exec($command);
+		return $out;
+	}
+
 	
 
 

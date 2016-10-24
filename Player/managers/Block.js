@@ -144,7 +144,7 @@ Block.prototype.setText = function(layer, v){
 }
 
 Block.prototype.setImage = function(layer, src){
-	var obj = layer;
+	var obj = layer;	
 	while(!this.isImageAsset(obj)){
 		if('refId' in obj){
 			obj = this.findAsset(obj.refId);
