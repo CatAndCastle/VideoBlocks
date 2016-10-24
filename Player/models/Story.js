@@ -68,11 +68,34 @@ Story.prototype.getAssets = function(num){
 		var data = num>3 ? this.body.pop() : this.body.shift();
 		arr.push(new Asset(data));
 		this.usedAssets.push(data);
-		// arr.push(this.getVidAsset());
 	}
 
 	return arr;
 }
+
+Story.prototype.getEndAssets = function(num){
+	var arr = this.getAssets(num);
+	// force all to be images
+	for(var i=0; i<arr.length; i++){
+		arr[i].type = 'image';
+	}
+	if(arr.length < num){
+		var i = 0;
+		while(arr.length < num){
+			if(i >= this.usedAssets.length){
+				i=0;
+			}
+			var data = this.usedAssets[i];
+			data.type = 'image';
+			arr.push(new Asset(data));
+			i++;
+		}
+	}
+
+	return arr;
+
+}
+
 Story.prototype.saveData = function(){
 	var data = {
 		'assets': [],

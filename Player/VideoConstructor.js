@@ -121,7 +121,10 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 VideoConstructor.prototype.getNextBlock = function(){	
 	if(this.blockIdx == this.numBlocks){
     	var block = this.TM.getEndBlock();
-    	block.fillTemplate(this.story.getAssets(block.animationData.placeholders.assets.length));
+    	res = block.fillTemplate(this.story.getEndAssets(block.animationData.placeholders.assets.length));
+    	if(res.error){
+        	console.log('error! not enough data to fill end block');
+        }
 	}
 	else if(this.blockIdx == 1){
 		var block = this.TM.getTitleBlock();

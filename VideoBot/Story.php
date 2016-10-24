@@ -10,7 +10,7 @@ abstract class StoryError
 class Story{
 
 	public $_MAX_V = 20;
-	public $_MAX_A = 100;
+	public $_MAX_A = 50;
 	public $error = false;
 
 	public $hashtags = [];
@@ -77,8 +77,10 @@ class Story{
 		$videos = [];
 		$images = [];
 		$numvids = 0;
+		$numimgs = 0;
 		foreach ($this->story['body'] as $idx => $asset) {
-			if($idx > $this->_MAX_A || $numvids>$this->_MAX_V){break;}
+			// if(($numimgs + $numvids) > $this->_MAX_A || $numvids>$this->_MAX_V){break;}
+			if(($numimgs + $numvids) > $this->_MAX_A ){break;}
 			
 			if(!$this->isValid($asset)){
 				continue;
@@ -127,6 +129,7 @@ class Story{
 				$fileExists = checkRemoteFile($url);
 				if($fileExists){
 					array_push($images, $asset);
+					$numimgs ++;
 				}
 			}
 

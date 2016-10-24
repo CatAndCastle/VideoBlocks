@@ -41,7 +41,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("twvFQwV4YfD7");
+// $sqs->pushToVideoQueue("p1dbtIs4FjD9");
 while(true){
 	// Fetch storyId from SQS
 	try{
