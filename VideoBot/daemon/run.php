@@ -102,7 +102,7 @@ while(true){
 		$s3->upload(S3Bucket::Video, $thumb, $storyId."/poster.jpg", true);
 	}
 	if(file_exists($bot->dir."/data.json")){
-		// $s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
+		$s3->upload(S3Bucket::Video, $bot->dir."/data.json", $storyId."/data.json", true);
 	}
 
 	//DEV
