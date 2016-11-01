@@ -13,7 +13,7 @@ TemplateManager.prototype.configure = function(params){
 		this[key] = params[key];
 	}
 
-	this.loadFonts();
+	this.loadFonts(); 
 	this.loadColors();
 
 	// template sets will depend on this.type
@@ -36,8 +36,8 @@ TemplateManager.prototype.configure = function(params){
 	this.END_TEMPLATES = ['EndCard_01'];
 	this.CONTENT_TEMPLATES = [
 								'Block_01',
-								'Block_02',
-								'Block_03',
+								// 'Block_02',
+								// 'Block_03',
 								'Block_04',
 								'Block_05',
 								'Block_06'
@@ -47,7 +47,7 @@ TemplateManager.prototype.configure = function(params){
 
 TemplateManager.prototype.loadFonts = function(){
 	this.fontManager = new FontManager();
-	// this.fontManager.loadFonts(this.type);
+	// this.fontManager.loadFonts(this.type); // - using NotoSans.
 }
 
 TemplateManager.prototype.loadColors = function(){

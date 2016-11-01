@@ -3,6 +3,18 @@ var Asset = function(data){
 
 	this.type = 'image';
 
+	if(typeof data === 'string'){
+		if (CONFIG.platform == 'phantom'){
+			var path = '.data/' + CONFIG.storyId + '/assets/' + data + '/asset.json';
+			var dataString = loadFile(path);
+	    	data = JSON.parse(dataString);
+		}
+		else{
+			// TODO: API - 
+			console.log("TODO: get Asset Data from API");
+		}
+	}
+
 	for(var key in data){
 		this[key] = data[key];
 	}

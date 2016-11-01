@@ -51,7 +51,7 @@ FontManager.prototype.load = function(fontsArray){
 
 FontManager.prototype.addFont = function(data){
 	this.chars = this.chars.concat(data.chars);
-    // this.fonts.list = this.fonts.list.concat(data.fonts.list);
+    this.fonts.list = this.fonts.list.concat(data.fonts.list);
 }
 
 FontManager.prototype.fontFile = function(fontName){

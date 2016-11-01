@@ -1,10 +1,12 @@
 var VideoConstructor = function(params){
 	// defaults
-	this.duration = 30;
-	this.storyId = '';
-	this.blockIdx = 1;
-	this.frameRate = 29.97;
-	this.numBlocks = 6;
+	this.duration 	= 30;
+	this.storyId 	= '';
+	this.blockIdx 	= 1;
+	this.frameRate	= 29.97;
+	this.numBlocks 	= 6;
+	this.story 		= null;
+	this.asset 		= null;
 	
 	this.animationItem = null;
 	this.renderParams = {
@@ -19,13 +21,15 @@ var VideoConstructor = function(params){
 		this[key] = params[key];
 	}
 
+	this.log_data	 = {blocks: []};
+
 	this.configure();
 
 }
 
 VideoConstructor.prototype.configure = function(){
 	this.numFrames = Math.floor(this.frameRate*this.duration);
-	this.loadStoryData();
+	this.loadData();
 	
 	this.TM = new TemplateManager();
 
@@ -45,10 +49,14 @@ VideoConstructor.prototype.loadColors = function(){
 }
 
 
-VideoConstructor.prototype.loadStoryData = function(){
-	this.story = new Story(this.storyId);
-
-	// this.numBlocks = Math.min(this.numBlocks, 2+Math.floor(this.story.body.length/2));
+VideoConstructor.prototype.loadData = function(){
+	if(this.assetId){
+		this.numBlocks = 1;
+		this.asset = new Asset(this.assetId);
+	}else{
+		this.story = new Story(this.storyId);
+	}
+	
 }
 
 VideoConstructor.prototype.startRender = function(){
@@ -87,6 +95,7 @@ VideoConstructor.prototype.goToNextFrame = function(){
 VideoConstructor.prototype.loadNextBlock = function(autoplay){
 	var self = this;
 	var block = this.getNextBlock();
+	this.log_data.blocks.push(block.blockId);
 	this.renderParams.animationData = block.animationData;
 	this.renderParams.autoplay = autoplay;
 
@@ -119,6 +128,17 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 }
 
 VideoConstructor.prototype.getNextBlock = function(){	
+	if(this.story == null){
+		var block = this.TM.getContentBlock({maxAssets: 1});
+        res = block.fillTemplate([this.asset]);
+        this.blockIdx++;
+        return block;
+        // if(res.error){
+        // 	this.blockIdx = this.numBlocks
+        // 	return this.getNextBlock();
+        // }
+	}
+
 	if(this.blockIdx == this.numBlocks){
     	var block = this.TM.getEndBlock();
     	res = block.fillTemplate(this.story.getEndAssets(block.animationData.placeholders.assets.length));

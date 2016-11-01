@@ -32,6 +32,7 @@
     <script src="_ColorPalletes/colors.js"></script>
     <script src="Player/managers/ColorManager.js"></script>
     <script src="Player/managers/TemplateManager.js"></script>
+    <script src="Player/managers/GoogleApi.js"></script>
     <script src="Player/VideoConstructor.js"></script>
 
 </head>
@@ -41,13 +42,30 @@
   <script>
 
     STORYID = getQueryStringValue('storyId');
-
+    CONFIG.storyId = STORYID;
+    
     var renderer = getQueryStringValue('renderer');
     CONFIG.renderer = renderer || 'canvas';
 
     var platform = getQueryStringValue('p');
     CONFIG.platform = platform || 'browser';
-   
+
+    var language = getQueryStringValue('lang');
+    CONFIG.language = language ? language : 'en';
+    
+    var assetId = getQueryStringValue('assetId');
+    CONFIG.assetId = assetId ? assetId : null;
+
+    var size = getQueryStringValue('s');
+    if(size){
+        var arr = size.split("x"),
+            w   = arr[0],
+            h   = arr[1];
+        document.getElementById("bodymovin").style.width =  w+"px";
+        document.getElementById("bodymovin").style.height = h+"px";
+
+    }
+
   </script>
 </body>
 </html>

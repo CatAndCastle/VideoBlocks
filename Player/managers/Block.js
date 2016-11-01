@@ -8,6 +8,7 @@ var Block = function(){
 Block.prototype.loadTemplate = function(path) {
 
 	this.folder = path.replace(/\/[^\/]+\/?$/, '');
+	this.blockId = this.folder;
 
     var dataString = loadFile(path);
     this.animationData = JSON.parse(dataString);
@@ -91,6 +92,10 @@ Block.prototype.fillData = function (config, asset){
 				layer = this.animationData.layers[obj.idx],
 				value = asset.get(key);
 			if(obj.type == 'text'){
+				if (CONFIG.language != 'en' && key == 'tweetbody'){
+					var google = new GoogleApi();
+					value.text = google.translate(value.text, 'en', CONFIG.language);
+				}
 				self.setText(layer, value);
 			}
 			else if(obj.type == 'image' && value.type == 'video'){
@@ -127,6 +132,7 @@ Block.prototype.setText = function(layer, v){
 			}
 		}
 	}
+
 	obj.t.d.t = v.text;
 	obj.t.d.mf = Math.min(v.mf, obj.t.d.s);
 	obj.t.d.f = "NotoSans";
