@@ -13,12 +13,12 @@ class LiveStream{
 
 	public $blocks = [];
 
-	function __construct($storyId, $streamUrl){
+	function __construct($storyId, $streamUrl, $endtime=0){
 		$this->storyId 		= $storyId;
 		$this->dir 			= __DIR__."/_data/".$storyId."/live/";
 		$this->streamUrl 	= $streamUrl;
 
-		$this->endTime 		= time() + 60; // run for 1 min
+		$this->endTime 		= $endtime; // run for 1 min
 	}
 
 	// stream
@@ -26,7 +26,7 @@ class LiveStream{
 		$stream = new FFmpegConcatStream($this->storyId, $this->streamUrl, $this->dir);
 		$path = $this->getNextSegment();
 		do{
-			echo " + add file $path\n";
+			echo " + queue file $path\n";
 			if($path != null){
 				$stream->addFile($path);
 			}
@@ -42,19 +42,26 @@ class LiveStream{
 
 	function getNextSegment(){
 		try{
-			$mysql = new Mysql();
-			$blocks =  $mysql->getStoryBlocks($this->storyId, $this->maxtimestamp, 1);
-			if(count($blocks) > 0){
-				// advance current idx to new segment
-				$this->currentIdx = count($this->blocks);
-				// add new blocks
-				foreach ($blocks as $key => $obj) {
-					$this->blocks[] = $this->getLocalPath($obj['mp4_url']);
-					$this->maxtimestamp = $obj['time_added'];
+			if($this->currentIdx > count($this->blocks)-2){
+				echo "-> fetch more blocks from mysql...";
+				$mysql = new Mysql();
+				$blocks =  $mysql->getStoryBlocks($this->storyId, $this->maxtimestamp, 5);
+				echo "...found ".count($blocks)."\n";
+				if(count($blocks) > 0){
+					// advance current idx to new segment
+					// $this->currentIdx = count($this->blocks);
+					// add new blocks
+					foreach ($blocks as $key => $obj) {
+						$this->blocks[] = $this->getLocalPath($obj['mp4_url']);
+						$this->maxtimestamp = $obj['time_added'];
+					}
+					// delete old blocks if accumulates > 20 video segments - to free space on disk
+					$this->clean();
 				}
-			}else{
-				$this->currentIdx = ($this->currentIdx+1) >= count($this->blocks) ? (max(0,count($this->blocks)-20)) : $this->currentIdx+1;
 			}
+			// else{
+			$this->currentIdx = ($this->currentIdx+1) >= count($this->blocks) ? (max(0,count($this->blocks)-20)) : $this->currentIdx+1;
+			// }
 			
 		}
 		catch (MysqlException $e){
@@ -63,7 +70,7 @@ class LiveStream{
 		}
 
 		// no blocks rendered yet
-		if(count($this->blocks) < 1){
+		if(count($this->blocks) < 1 || $this->currentIdx < 0){
 			return null;
 		}
 
@@ -79,52 +86,18 @@ class LiveStream{
 
 	}
 
-	// function getNextSegment(){
-	// 	if($this->numSegments >= $this->maxSegments){
-	// 		return null;
-	// 	}
-	// 	$videos = $this->getAvailableVideos();
-	// 	if(count($videos) < 1){
-	// 		return null;
-	// 	}
-	// 	// print_r($videos);
-	// 	// next idx
-	// 	$this->currentIdx = ($this->currentIdx+1) >= count($videos) ? 0 : $this->currentIdx+1;
-	// 	$path = $videos[$this->currentIdx];
-	// 	$this->numSegments ++;
-
-	// 	return $this->dir . $path;
-
-
-	// }
-	// function getAvailableVideos(){
-	// 	$arr = [
-	// 	'http://s3.amazonaws.com/video.zeroslant.com/jEpUejt3X4Oh/1369297903940285690_4293858.mp4',
-	// 	'http://s3.amazonaws.com/video.zeroslant.com/jEpUejt3X4Oh/1369326853957344300_1633884196.mp4',
-	// 	'http://s3.amazonaws.com/video.zeroslant.com/jEpUejt3X4Oh/1369336222547462029_334706680.mp4',
-	// 	'http://s3.amazonaws.com/video.zeroslant.com/jEpUejt3X4Oh/1369335530789296699_15163357.mp4',
-	// 	'http://s3.amazonaws.com/video.zeroslant.com/jEpUejt3X4Oh/1369337474127800406_1633884196.mp4'
-	// 	];
-	// 	return $arr;
-	// 	// $files = scandir($this->dir); //returns files sorted in ascending order
-	// 	// $videos = array();
-	// 	// foreach ($files as $path) {
-	// 	// 	if (pathinfo($path, PATHINFO_EXTENSION) == "mp4") {
-	// 	// 		$videos[] = $path;
-	// 	// 	}
-	// 	// }
-	// 	// return $this->clean($videos);
-	// }
-
-	function clean($videos){
-		if(count($videos) > 20){
-			$toDelete = array_splice($this->blocks, 0, count($this->blocks)-20);
+	function clean(){
+		if(count($this->blocks) > 20){
+			$numDelete = count($this->blocks)-20;
+			$toDelete = array_splice($this->blocks, 0, $numDelete);
 			foreach ($toDelete as $path) {
-				unlink($path);
+				unlink($this->dir.$path);
 			}
 			// offset currentIdx
-			$this->currentIdx = $this->currentIdx - (count($this->blocks)-20);
+			$this->currentIdx = $this->currentIdx - $numDelete;
+			echo " -> cleaned up!\n";
 		}
+
 		return $this->blocks;
 	}
 

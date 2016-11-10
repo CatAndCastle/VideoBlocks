@@ -34,7 +34,7 @@ class StoryInfo{
 		if(count($hashtags) > 0){
 			$hashtag_str = "#". join(' #', $hashtags);
 		}
-		return  "Quick Take: ".$this->story['name']."\n\nSee more: ".$this->story['link']."\n\n".$hashtag_str;
+		return  "Social Media Quick Take: ".$this->story['name']."\n\nSee more: ".$this->story['link']."\n\n".$hashtag_str;
 	}
 
 	function location(){

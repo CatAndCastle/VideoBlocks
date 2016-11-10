@@ -10,10 +10,10 @@ class FacebookManager{
 	/** ZERO SLANT Page Token - never expires **/
 	// @masha
 	// const APP_TOKEN = 'EAAMXI1aGZBTwBAKd6DoVEOdxQ1An8cSyZAvSBYUZAuBxqRfqeiCpc8wZBZBiF3TaedoTIHQQnwptqkVuUQwvfnsXZCwAQnt88UmsgeopsCCiTWENRSqBpCYVoSqza9pxbN7t5Mf9oXe6k1Hgc55xtLY9z3xi1gzDmZAnoDTqiu0xQZDZD';
-	// @eunice fake page
-	//const APP_TOKEN = 'EAAMXI1aGZBTwBANbhH53fWjvxirXfPKtN5fnb5UV0zXOgwK2OqTYvMBquERgEkMuxVRDKnvB40YKdbyZBcFA9IXeNcU4dkDfRr1ZBQ6biEKZC8cXPuPkI1WOl7iVXmLs5sBHZAiww9ZBimL8Vl8zZALtj3mZCcZARq5pytZA9IMzWh3Gs3TEVTJuta';
+	// @eunice fake account
+	const APP_TOKEN = 'EAAMXI1aGZBTwBANbhH53fWjvxirXfPKtN5fnb5UV0zXOgwK2OqTYvMBquERgEkMuxVRDKnvB40YKdbyZBcFA9IXeNcU4dkDfRr1ZBQ6biEKZC8cXPuPkI1WOl7iVXmLs5sBHZAiww9ZBimL8Vl8zZALtj3mZCcZARq5pytZA9IMzWh3Gs3TEVTJuta';
 	// @fake eaccount test live stream
-	const APP_TOKEN = 'EAAMXI1aGZBTwBAJzyO9Lp7llvrPmkhGsoZC2UXLYkej3qnZCyZBnMdQDMbndpSFPdHKgQEWPSUNR4vapZCRxkaNcJzpiT4fL4VIu4MYYX2Mk5B3GrR5jWh6dEGRofLOerPT8TvDCovwhdkE974CN4kmgDqgavoR8rsc7mAZCkbdODwfg2I9rKY';
+	// const APP_TOKEN = 'EAAMXI1aGZBTwBAJzyO9Lp7llvrPmkhGsoZC2UXLYkej3qnZCyZBnMdQDMbndpSFPdHKgQEWPSUNR4vapZCRxkaNcJzpiT4fL4VIu4MYYX2Mk5B3GrR5jWh6dEGRofLOerPT8TvDCovwhdkE974CN4kmgDqgavoR8rsc7mAZCkbdODwfg2I9rKY';
 	private $db;
 
 	private $userId;
@@ -44,8 +44,7 @@ class FacebookManager{
 		$data = array(
 			'title' =>  $title,
 			'description' => $description,
-			'content_tags' => $content_tags,
-			'hello' => 'asd'
+			'content_tags' => $content_tags
 			// 'status' => 'UNPUBLISHED',
 			// 'privacy' => ['value'=>'SELF']
 		);
@@ -53,7 +52,6 @@ class FacebookManager{
 
 		try {
 		  $response = $fb->post('/me/live_videos', $data);
-		  var_dump($response);
 		  return $response->getDecodedBody();
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 		  // When Graph returns an error

@@ -34,8 +34,27 @@ function saveRenderedBlock($block){
 $sqs = new SQS();
 $s3 = new AWSS3();
 
-// // #################################################
-// //DEV
+// #################################################
+//DEV
+// $story = json_decode(file_get_contents("http://www.zeroslant.com/api/v0.2/story/nPzMZGazRieb"), true);
+// $storyId = $story['storyId'];
+// foreach ($story['body'] as $asset) {
+// 	// echo $asset['type'] . "\n";
+// 	if($asset['type'] != 'image' && $asset['type'] != 'video'){ continue; }
+// 	$assetId = $asset['id'];
+// 	$data = json_encode($asset);
+
+// 	echo "$assetId\n";
+
+// 	$attributes = [
+// 		'data' => ['DataType' => 'String', 'StringValue' => $data],
+// 		'storyId' => ['DataType' => 'String', 'StringValue' => $storyId],
+// 	];
+// 	$sqs->sendMessage(SQSQueue::VideoBlocks, $assetId, $attributes);
+// }
+
+// exit(0);
+
 // $mysql = new Mysql();
 // $storyId = 'QrMUEk8clAGJ';
 // $as = ['1373537090952721434_2079237282', '1373536849503429903_31639893', '1373536606845603805_254505916', '1373536274169753979_1447724981', '1373536254860064329_31273743', '793240583238279169'];
@@ -50,7 +69,7 @@ $s3 = new AWSS3();
 // 	$sqs->sendMessage(SQSQueue::VideoBlocks, $assetId, $attributes);
 // }
 // $mysql->close();
-// // #################################################
+// #################################################
 
 
 while(true){
@@ -75,9 +94,17 @@ while(true){
 	//read data, storyId attributes
 	$data = json_decode($msg['MessageAttributes']['data']['StringValue'], true);
 	$data['storyId'] = $msg['MessageAttributes']['storyId']['StringValue'];
+	$trendend = intval($msg['MessageAttributes']['trendend']['StringValue']);
 
 	// Remove from queue
 	$sqs->deleteMessage(SQSQueue::VideoBlocks, $msg);
+
+	// check if story is still live?
+	if($trendend < time()){
+		usleep(500000);
+		continue;
+	}
+
 
 	logme("rendering asset $assetId");
 	$time_start = microtime(true);

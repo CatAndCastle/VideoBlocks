@@ -72,7 +72,7 @@ class FFmpegConcatStream{
 		$f = exec("mktemp -u " . $this->concat_file);
 		exec("mkfifo $f");
 		// exec("chmod a+rw $f");
-		echo "new concat: $f\n";
+		// echo "new concat: $f\n";
 		return $f;
 	}
 	function write($f, $data){

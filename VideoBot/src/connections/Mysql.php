@@ -60,7 +60,7 @@ class Mysql{
     }
 
     function getStoryBlocks($storyId, $timestamp, $num=10){
-        $q = "SELECT assetId, mp4_url, time_added FROM video_blocks_rendered WHERE storyId=? AND time_added > ? ORDER BY time_added ASC LIMIT ?";
+        $q = "SELECT assetId, mp4_url, time_added, blockId FROM video_blocks_rendered WHERE storyId=? AND time_added > ? ORDER BY time_added ASC LIMIT ?";
         $res = $this->select($q, [['s', $storyId], ['i', $timestamp], ['i', $num]]);
         return $res;
     }
