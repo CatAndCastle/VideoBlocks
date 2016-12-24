@@ -30,19 +30,44 @@ TemplateManager.prototype.configure = function(params){
 	// 							'ZS_Template_FLOAT_Quote_03'];
 
 	/* 
+		_templates_v1
+	*/
+	// this.TITLE_TEMPLATES = ['TitleCard_01', 'TitleCard_02', 'TitleCard_03'];
+	// this.END_TEMPLATES = ['EndCard_01'];
+	// this.CONTENT_TEMPLATES = [
+	// 							'Block_01',
+	// 							// 'Block_02',
+	// 							// 'Block_03',
+	// 							'Block_04',
+	// 							'Block_05',
+	// 							'Block_06'
+	// 							];
+
+	/* 
 		_templates_v2
 	*/
-	this.TITLE_TEMPLATES = ['TitleCard_01', 'TitleCard_02', 'TitleCard_03'];
-	this.END_TEMPLATES = ['EndCard_01'];
-	this.CONTENT_TEMPLATES = [
-								'Block_01',
-								// 'Block_02',
-								// 'Block_03',
-								'Block_04',
-								'Block_05',
-								'Block_06'
-								];
-
+	this.TITLE_TEMPLATES = ['TitleCard_01', 'TitleCard_02', 'TitleCard_03', 'TitleCard_04', 'TitleCard_06'];
+	// this.TITLE_TEMPLATES = ['TitleCard_01'];
+	this.END_TEMPLATES = ['EndCard_01', 'EndCard_02'];
+	this.CONTENT_TEMPLATES =[
+							'Block_01',
+							'Block_02',
+							'Block_03',
+							'Block_04',
+							'Block_05',
+							'Block_06',
+							'Block_07',
+							'Block_08',
+							'Block_09',
+							'Block_10',
+							'Block_10',
+							'Block_12',
+							'Block_13',
+							'Block_14',
+							'Block_15',
+							'Block_16',
+							'Block_17'
+							];
 }
 
 TemplateManager.prototype.loadFonts = function(){
@@ -74,6 +99,10 @@ TemplateManager.prototype.getContentBlock = function(params){
 	// pick random block
 	this.previousBlock =  tmp.random();
 	return this.loadBlock(this.folder + this.previousBlock + '/data.json');
+}
+
+TemplateManager.prototype.getBlockById = function(blockId){
+	return this.loadBlock(this.folder + blockId + '/data.json');
 }
 
 TemplateManager.prototype.loadBlock = function(path){

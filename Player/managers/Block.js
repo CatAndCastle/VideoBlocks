@@ -1,5 +1,5 @@
 var Block = function(){
-	this.type = "post";
+	this.type = "asset";
 	this.animationData = {};
 
 };
@@ -9,6 +9,7 @@ Block.prototype.loadTemplate = function(path) {
 
 	this.folder = path.replace(/\/[^\/]+\/?$/, '');
 	this.blockId = this.folder;
+	this.getType();
 
     var dataString = loadFile(path);
     this.animationData = JSON.parse(dataString);
@@ -19,6 +20,17 @@ Block.prototype.loadTemplate = function(path) {
     this.setBaseFolder();
     
 };
+
+Block.prototype.getType = function(){
+	var id = this.blockId.toLowerCase();
+	if(id.indexOf("title") !== -1){
+		this.type = "title";
+	}else if(id.indexOf("end") !== -1){
+		this.type = "end";
+	}else{
+		this.type = "asset";
+	}
+}
 
 Block.prototype.setBaseFolder = function(){
 	for(var i=0; i<this.animationData.assets.length; i++){
@@ -131,6 +143,11 @@ Block.prototype.setText = function(layer, v){
 				}
 			}
 		}
+		else{
+			console.log("Bad Text Layer");
+			console.log(layer);
+			return;
+		}
 	}
 
 	obj.t.d.t = v.text;
@@ -165,6 +182,11 @@ Block.prototype.setImage = function(layer, src){
 				}
 			}
 		}
+		else{
+			console.log("Bad Image Layer");
+			console.log(layer);
+			return;
+		}
 	}
 
 	obj.u = "";
@@ -188,6 +210,11 @@ Block.prototype.setVideo = function(layer, src){
 					break;
 				}
 			}
+		}
+		else{
+			console.log("Bad Video Layer");
+			console.log(layer);
+			return;
 		}
 	}
 

@@ -7,6 +7,7 @@ var VideoConstructor = function(params){
 	this.numBlocks 	= 6;
 	this.story 		= null;
 	this.asset 		= null;
+	this.blockId    = null;
 	
 	this.animationItem = null;
 	this.renderParams = {
@@ -28,7 +29,7 @@ var VideoConstructor = function(params){
 }
 
 VideoConstructor.prototype.configure = function(){
-	this.numFrames = Math.floor(this.frameRate*this.duration);
+	// this.numFrames = Math.floor(this.frameRate*this.duration);
 	this.loadData();
 	
 	this.TM = new TemplateManager();
@@ -50,6 +51,10 @@ VideoConstructor.prototype.loadColors = function(){
 
 
 VideoConstructor.prototype.loadData = function(){
+	if(this.blockId){
+		this.numBlocks = 1;
+		this.story = new Story(this.storyId);
+	}
 	if(this.assetId){
 		this.numBlocks = 1;
 		this.asset = new Asset(this.assetId);
@@ -128,6 +133,20 @@ VideoConstructor.prototype.loadNextBlock = function(autoplay){
 }
 
 VideoConstructor.prototype.getNextBlock = function(){	
+	if(this.blockId){
+		var block = this.TM.getBlockById(this.blockId);
+		if(block.type == "title"){
+			block.fillTemplate([this.story]);
+		}else{
+			res = block.fillTemplate(this.story.getEndAssets(block.animationData.placeholders.assets.length));
+	    	if(res.error){
+	        	console.log('error! not enough data to fill end block');
+	        }
+		}
+		return block;
+
+	}
+	
 	if(this.story == null){
 		var block = this.TM.getContentBlock({maxAssets: 1});
         res = block.fillTemplate([this.asset]);
