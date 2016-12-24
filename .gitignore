@@ -2,6 +2,7 @@
 .DS_Store
 _fonts/NotoSans/*
 log/*
+_build/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

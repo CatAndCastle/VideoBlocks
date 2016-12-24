@@ -17,18 +17,11 @@ function setVideoStatus($storyId, $status, $url, $i){
 	try{
 		$mysql = new Mysql();
 		$mysql->setVideoStatus($storyId, $status, $url);
-		$mysql->close();
 		return true;
 	}
 	catch (MysqlException $e){
 		logme($e->getMessage());
-
-		if($i < 5){
-			usleep(5000000);
-			setVideoStatus($storyId, $status, $url, $i++);
-		}else{
-			return false;
-		}
+		return false;
 	}
 }
 
@@ -39,7 +32,7 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("sA067FNW3z0S");
+// $sqs->pushToVideoQueue("7nqKTypwQIdR");
 while(true){
 	// Fetch storyId from SQS
 	try{
