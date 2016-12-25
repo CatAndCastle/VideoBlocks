@@ -49,6 +49,7 @@ TemplateManager.prototype.configure = function(params){
 	this.TITLE_TEMPLATES = ['TitleCard_01', 'TitleCard_02', 'TitleCard_03', 'TitleCard_04', 'TitleCard_06'];
 	// this.TITLE_TEMPLATES = ['TitleCard_01'];
 	this.END_TEMPLATES = ['EndCard_01', 'EndCard_02'];
+	// this.CONTENT_TEMPLATES =['Block_17'];
 	this.CONTENT_TEMPLATES =[
 							'Block_01',
 							'Block_02',
@@ -60,13 +61,28 @@ TemplateManager.prototype.configure = function(params){
 							'Block_08',
 							'Block_09',
 							'Block_10',
-							'Block_10',
+							'Block_11',
 							'Block_12',
 							'Block_13',
 							'Block_14',
 							'Block_15',
 							'Block_16',
 							'Block_17'
+							];
+
+	this.CONTENT_TEMPLATES_SINGLE = [
+							'Block_01',
+							'Block_04',
+							'Block_05',
+							'Block_06',
+							'Block_07',
+							'Block_08',
+							'Block_10',
+							'Block_12',
+							'Block_13',
+							'Block_14',
+							'Block_15',
+							'Block_16'
 							];
 }
 
@@ -91,8 +107,12 @@ TemplateManager.prototype.getEndBlock = function(){
 }
 
 TemplateManager.prototype.getContentBlock = function(params){
+	var templates = this.CONTENT_TEMPLATES;
+	if (typeof params.maxAssets !== 'undefined' && params.maxAssets == 1) {
+		templates = this.CONTENT_TEMPLATES_SINGLE;
+	}
 	// don't show the same block a row
-	var tmp = this.CONTENT_TEMPLATES.slice();
+	var tmp = templates.slice();
 	if(tmp.indexOf(this.previousBlock) > -1){
 		tmp.splice(tmp.indexOf(this.previousBlock), 1);
 	}
