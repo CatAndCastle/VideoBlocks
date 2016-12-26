@@ -56,19 +56,19 @@ $s3 = new AWSS3();
 // exit(0);
 
 // $mysql = new Mysql();
-// $storyId = 'QrMUEk8clAGJ';
-// $as = ['1373537090952721434_2079237282', '1373536849503429903_31639893', '1373536606845603805_254505916', '1373536274169753979_1447724981', '1373536254860064329_31273743', '793240583238279169'];
-// foreach ($as as $assetId) {
-	// $assetId = '1369342022783214485_199625402';
-	// $asset = $mysql->getAsset($assetId);
+// $storyId = 'xRdEWlEFEv0i';
+// // $as = ['1373537090952721434_2079237282', '1373536849503429903_31639893', '1373536606845603805_254505916', '1373536274169753979_1447724981', '1373536254860064329_31273743', '793240583238279169'];
+// // foreach ($as as $assetId) {
+// 	$assetId = '1413221337254024128_342664748';
+// 	$asset = $mysql->getAsset($assetId);
 	
-	// $attributes = [
-	// 	'data' => ['DataType' => 'String', 'StringValue' => $asset['data']],
-	// 	'storyId' => ['DataType' => 'String', 'StringValue' => $storyId],
-	// 	'trendend' => ['DataType' => 'Number', 'StringValue' => time() + 3600]
-	// ];
-	// $sqs->sendMessage(SQSQueue::VideoBlocks, $assetId, $attributes);
-// }
+// 	$attributes = [
+// 		'data' => ['DataType' => 'String', 'StringValue' => $asset['data']],
+// 		'storyId' => ['DataType' => 'String', 'StringValue' => $storyId],
+// 		'trendend' => ['DataType' => 'Number', 'StringValue' => time() + 3600]
+// 	];
+// 	$sqs->sendMessage(SQSQueue::VideoBlocks, $assetId, $attributes);
+// // }
 // $mysql->close();
 // #################################################
 
@@ -123,7 +123,7 @@ while(true){
 			// page hung up -> try again
 			$block->cleanup();
 			//push back to queue
-			$sqs->pushToVideoQueue(SQSQueue::VideoBlocks, $assetId, $msg['MessageAttributes']);
+			$sqs->sendMessage(SQSQueue::VideoBlocks, $assetId, $msg['MessageAttributes']);
 		}else{
 			// whatever, moving on
 			$block->cleanup();
