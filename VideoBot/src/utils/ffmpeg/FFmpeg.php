@@ -10,7 +10,7 @@ class FFmpeg{
 	function __construct()
 	{
 		$this->ffmpeg = FFMPEG_BIN . " -loglevel quiet";
-		$this->default_audio = dirname(__DIR__, 1).'/resources/default_audio.aac';
+		$this->default_audio = dirname(__DIR__, 3).'/resources/default_audio.aac';
 	}
 
 	/**

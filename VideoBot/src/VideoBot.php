@@ -61,6 +61,7 @@ class VideoBot{
 			return ['status'=>'success', 'video'=>$this->finalFile, 'thumb'=>$this->thumb];
 		}
 		else{
+			logme('CAUGHT EXCEPTION: Failed to combine audio + video files');
 			return ['status'=>'error', 'error'=>VideoError::RENDER_ERROR, 'video'=>null];
 		}
 	}
