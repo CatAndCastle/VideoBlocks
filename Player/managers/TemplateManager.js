@@ -70,6 +70,7 @@ TemplateManager.prototype.configure = function(params){
 							'Block_17'
 							];
 
+	
 	this.CONTENT_TEMPLATES_SINGLE = [
 							'Block_01',
 							'Block_04',
@@ -77,7 +78,6 @@ TemplateManager.prototype.configure = function(params){
 							'Block_06',
 							'Block_07',
 							'Block_08',
-							'Block_10',
 							'Block_12',
 							'Block_13',
 							'Block_14',
