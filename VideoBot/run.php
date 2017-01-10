@@ -46,7 +46,9 @@ $micro = $seconds * 1000000;
 // init sqs
 $sqs = new SQS();
 $s3 = new AWSS3();
-// $sqs->pushToVideoQueue("U5i0Zz0V6580");
+
+// $sqs->pushToVideoQueue("LfLIaXBRxenI");
+
 while(true){
 	// Fetch storyId from SQS
 	try{
@@ -140,6 +142,7 @@ while(true){
 
 	// Sleep before next cycle
 	usleep($micro);
+
 }
 
 
