@@ -94,6 +94,7 @@ class VideoBot{
 
 		$ffmpeg = new FFmpeg();
 		$this->finalFile = $this->dir."/".$this->finalName();
+		$this->audio = null; // force background audio for all videos
 		$ffmpeg->combineAV($this->video, $this->audio, $this->finalFile, $this->dir);
 	}
 

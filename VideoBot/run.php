@@ -10,6 +10,7 @@ require_once __DIR__.'/src/exceptions/PhantomException.php';
 require_once __DIR__.'/src/exceptions/MysqlException.php';
 require_once __DIR__.'/src/exceptions/SQSException.php';
 require_once __DIR__.'/src/errors/VideoError.php';
+require_once __DIR__.'/src/utils/Http.php';
 
 
 function setVideoStatus($storyId, $status, $url, $i){
@@ -17,6 +18,19 @@ function setVideoStatus($storyId, $status, $url, $i){
 	try{
 		$mysql = new Mysql();
 		$mysql->setVideoStatus($storyId, $status, $url);
+		return true;
+	}
+	catch (MysqlException $e){
+		logme($e->getMessage());
+		return false;
+	}
+}
+
+function setVideoDistributed($storyId, $status){
+	// return true;
+	try{
+		$mysql = new Mysql();
+		$mysql->setVideoDistributed($storyId, $status);
 		return true;
 	}
 	catch (MysqlException $e){
@@ -115,6 +129,14 @@ while(true){
 	$time = ceil($time_end - $time_start);
 	logme("$storyId t = $time");
 	// logme($uploadedUrl);
+
+	// post to social platforms
+	// POST
+	$http = new Http();
+	$res = $http -> post('http://zeroslant.com/api/v0.2/zerobot/distributeOnSocials', ['storyId' => $storyId]);
+
+	// set as distributed
+    setVideoDistributed($storyId, 1);
 
 	// Sleep before next cycle
 	usleep($micro);

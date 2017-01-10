@@ -74,7 +74,7 @@ $s3 = new AWSS3();
 
 
 while(true){
-	// Fetch storyId from SQS
+	// Fetch assetId from SQS
 	try{
 		$msgs = $sqs->receiveMessages(SQSQueue::VideoBlocks, 1);
 	}catch (SQSException $e){

@@ -43,6 +43,11 @@ class Mysql{
     	}
     }
 
+    function setVideoDistributed($storyId, $status){
+        $q = "UPDATE videos SET distributed=? WHERE storyId=?";
+        $this->query($q, [['i', $status], ['s', $storyId]] );
+    }
+
     function saveRenderedBlock($storyId, $assetId, $videoUrl, $blockId, $tags, $timestamp){
         $tnow = time();
         $q = "INSERT INTO video_blocks_rendered (storyId, assetId, mp4_url, blockId, tags, timestamp, time_added) VALUES (?,?,?,?,?,?,?) 
