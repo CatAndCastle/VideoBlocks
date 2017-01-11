@@ -20,7 +20,8 @@ class StoryInfo{
 	}
 
 	function load(){
-		$data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords,hashtags,topics');
+		$data = file_get_contents(API_URL . 'storyinfo/' . $this->storyId . '?fb=1');
+		// $data = file_get_contents(API_URL . 'story/' . $this->storyId . '?q=keywords,hashtags,topics');
 		$this->story = json_decode($data, true);
 	}
 
@@ -29,12 +30,14 @@ class StoryInfo{
 	}
 
 	function description(){
-		$hashtags = array_splice($this->story['keywords'], 0, 10);
-		$hashtag_str = "";
-		if(count($hashtags) > 0){
-			$hashtag_str = "#". join(' #', $hashtags);
-		}
-		return  "Social Media Quick Take: ".$this->story['name']."\n\nSee more: ".$this->story['link']."\n\n".$hashtag_str;
+		return $this->story['facebook_post']['description'];
+		
+		// $hashtags = array_splice($this->story['keywords'], 0, 10);
+		// $hashtag_str = "";
+		// if(count($hashtags) > 0){
+		// 	$hashtag_str = "#". join(' #', $hashtags);
+		// }
+		// return  "Social Media Quick Take: ".$this->story['name']."\n\nSee more: ".$this->story['link']."\n\n".$hashtag_str;
 	}
 
 	function location(){
@@ -42,17 +45,19 @@ class StoryInfo{
 	}
 
 	function content_tags(){
-		$fb = new FacebookManager();
-		$content_tags = array();
-		foreach ($this->story['topics'] as $t) {
-		    // get facebook tag
-		    $tags = $fb->search(['type'=>'adinterest', 'q'=>$t]);
-		    if(array_key_exists('data', $tags) && count($tags['data'])>0 ){
-		        // echo $tags['data'][0]['id'] . ' - ' . $tags['data'][0]['name'] . "\n";
-		        array_push($content_tags, $tags['data'][0]['id']);
-		    }
-		}
-		return $content_tags;
+		return $this->story['facebook_post']['tags'];
+
+		// $fb = new FacebookManager();
+		// $content_tags = array();
+		// foreach ($this->story['topics'] as $t) {
+		//     // get facebook tag
+		//     $tags = $fb->search(['type'=>'adinterest', 'q'=>$t]);
+		//     if(array_key_exists('data', $tags) && count($tags['data'])>0 ){
+		//         // echo $tags['data'][0]['id'] . ' - ' . $tags['data'][0]['name'] . "\n";
+		//         array_push($content_tags, $tags['data'][0]['id']);
+		//     }
+		// }
+		// return $content_tags;
 	}
 }
 

@@ -17,7 +17,6 @@ $title 			= $story->title();
 $description 	= $story->description();
 $content_tags 	= $story->content_tags();
 
-
 // Start Facebook Live Post
 $fb = new FacebookManager();
 $res = $fb->live_video_start($story->title(), $story->description(), $story->content_tags());
