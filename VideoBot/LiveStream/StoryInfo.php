@@ -12,7 +12,7 @@ class StoryInfo{
 	function __construct($storyId)
 	{
 		// local dir for story
-		$this->dir = __DIR__."_data/$storyId";
+		$this->dir = __DIR__."/_data/$storyId";
 		makedir($this->dir, 0777);
 
 		$this->storyId = $storyId;
